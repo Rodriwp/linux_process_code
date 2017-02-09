@@ -1,10 +1,13 @@
 //Practica 1: Ejercicio numero uno
 //@author Rodrigo Mompó Redoli
 
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
 
 void main(int argc, char *argv[])
 {
-    int pid = 0;
+    pid_t pid = 0;
     fprint("El padre esta ejecutando . . .");
     pid = fork();
     if (pid < 0){ /* error occurred */
