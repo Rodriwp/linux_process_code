@@ -1,11 +1,12 @@
-//Practica 1: Ejercicio numero uno
+//Practica 1: Ejercicio numero dos
 //@author Rodrigo Mompó Redoli
+//@author Jorge Serrano Dominguez
 
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <stdlib.h>
-#include <sys/wait.h>
+#include <wait.h>
 
 void main(int argc, char *argv[])
 {
@@ -29,6 +30,7 @@ void main(int argc, char *argv[])
             }
         }
         else { /* child process */
+            wait(NULL);
             int ret = execl("/bin/ls", "ls", NULL);
             if (ret == -1) {
             perror("execl");
@@ -37,6 +39,8 @@ void main(int argc, char *argv[])
     }
     else { /* parent process */
             //TODO: parent process
+        wait(NULL);
+        exit(EXIT_SUCCESS);
     }
 }
 
