@@ -1,6 +1,7 @@
-//Practica 1: Ejercicio numero uno
-//@author Rodrigo Mompó Redoli
-//@author Jorge Serrano Dominguez
+/*Practica 1: Ejercicio 2
+ *@author Rodrigo Mompó Redoli
+ *@author Jorge Serrano Dominguez
+ */
 
 #include <stdio.h>
 #include <unistd.h>
