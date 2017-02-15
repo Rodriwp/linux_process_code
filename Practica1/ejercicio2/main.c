@@ -30,7 +30,7 @@ void main(int argc, char *argv[])
             }
         }
         else { /* child process */
-            wait(NULL);
+            
             int ret = execl("/bin/ls", "ls", NULL);
             if (ret == -1) {
             perror("execl");
@@ -38,7 +38,7 @@ void main(int argc, char *argv[])
         }
     }
     else { /* parent process */
-            //TODO: parent process
+        wait(NULL);
         wait(NULL);
         exit(EXIT_SUCCESS);
     }
