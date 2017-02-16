@@ -1,6 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <signal.h>
+#define MAX_NUM_PIDS 10
+
+/*Signals*/
+void backupend_handler(){
+    printf("\n\nThe BackUp is finished\n\n");
+}
 
 void print_menu(){
     printf("\n******************Manager application********************\n\
@@ -18,7 +25,11 @@ void print_menu(){
 void main(){
     int daemon = 1;
     int selec = 0;
-    int temppid = 0;
+    pid_t temppid = 0;
+    pid_t child_pids[MAX_NUM_PIDS];
+    if (signal(SIGUSR1, sig_usr) == SIG_ERR) {
+       printf(" Impossible catching SIGUSR1\n");
+    }
     while(daemon){
         print_menu();
         if(scanf("%d",&selec)!= 1){
@@ -31,18 +42,35 @@ void main(){
                     exit(EXIT_FAILURE);
                 }
                 else if (temppid == 0) { /* edit.p */
-                    int ret= execlp("/usr/bin/gedit","gedit","pass_file","&",NULL); //FIXME: ruta gedit
+                    int ret= execlp("/usr/bin/gedit","gedit","pass_file_original",NULL); //FIXME: ruta gedit
                     if (ret == -1) {
-                    perror("execl: gedit");
+                        perror("execl: gedit");
+                        exit(EXIT_FAILURE);
                     }
-                    exit(EXIT_FAILURE);
-                }
-                else { /* main process */
-                    //TODO: gestionar el hijo
                 }
                 break;
             case 2:
-                //TODO: backup passwords
+                //TODO: pipe creation
+                temppid = fork();
+                if (temppid < 0){ /* error occurred */
+                    perror("Fork Failed");
+                    exit(EXIT_FAILURE);
+                }
+                else if (temppid == 0) { /* main backup */
+                        //TODO: main file procces
+                }
+                else{
+                    temppid = fork();
+                    if (temppid < 0){ /* error occurred */
+                        perror("Fork Failed");
+                        exit(EXIT_FAILURE);
+                    }
+                    else if (temppid == 0) { /* pfile */
+                        //TODO: backup code
+                    }else{//main
+                        //TODO:close all main pipe
+                    }
+                }
                 break;
             case 3:
                 //TODO:TIME
@@ -56,5 +84,8 @@ void main(){
                 break;
         }
     }
+    printf("Just wait a second. We're doing safe exit");
+    //TODO: salida segura del programa
+    printf("It's done, we always code safe");
     //TODO: safe exit
 }
