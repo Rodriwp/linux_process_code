@@ -1,7 +1,9 @@
-#define UTC 0
-#define CET 1
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
 void print_menu(){
-    printf("\n****Manager application****\n\
+    printf("\n******************Manager application********************\n\
            \n\
            Operations:\n\
            \n\
@@ -16,13 +18,28 @@ void print_menu(){
 void main(){
     int daemon = 1;
     int selec = 0;
-    int date_format = UTC;
+    int temppid = 0;
     while(daemon){
         print_menu();
-        //TODO: pick number from console
+        if(scanf("%d",&selec)!= 1){
+        }
         switch(selec){
             case 1:
-                //TODO: gedit
+                temppid = fork();
+                if (temppid < 0){ /* error occurred */
+                    perror("Fork Failed");
+                    exit(EXIT_FAILURE);
+                }
+                else if (temppid == 0) { /* edit.p */
+                    int ret= execlp("/usr/bin/gedit","gedit","pass_file","&",NULL); //FIXME: ruta gedit
+                    if (ret == -1) {
+                    perror("execl: gedit");
+                    }
+                    exit(EXIT_FAILURE);
+                }
+                else { /* main process */
+                    //TODO: gestionar el hijo
+                }
                 break;
             case 2:
                 //TODO: backup passwords
@@ -32,13 +49,12 @@ void main(){
                 break;
             case 4:
                 daemon = 0;
-                printf("Thanks for using our manager app. See you soon");
+                printf("Thanks for using our manager app. See you soon\n");
                 break;
             default:
                 printf("\nInvalid Option. Please try again\n");
                 break;
         }
-
     }
     //TODO: safe exit
 }
