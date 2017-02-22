@@ -43,9 +43,9 @@ void main(){
     }
     //Loop
     while(daemon){
-        selec = 0;
         print_menu();
         if(scanf("%d",&selec)!= 1){
+            selec = 0;
         }
         switch(selec){
             case 1:
