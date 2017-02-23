@@ -4,7 +4,7 @@
 
 #include <sys/types.h>
 #include <signal.h>
-# include <pthread.h>
+#include <pthread.h>
 
 #define MAX_NUM_PIDS 10
 #define PASS_FILE_PATH "./passfile"
@@ -76,7 +76,7 @@ void main(){
     //Loop
     while(daemon){
         print_menu();
-        if(scanf("%d",&selec)!= 1){
+        if(scanf("%i",&selec)!= 1){
             selec = 0;
         }
         switch(selec){
@@ -143,8 +143,7 @@ void main(){
                     temppid = fork();
                 }
                 else{
-                    printf("You have already enought time daemons. \n\
-If you need more, please contact with our sales deparment\n");
+                    printf("You have already enought time daemons.\nIf you need more, please contact with our sales deparment\n");
                     break;
                 }
                 if (temppid < 0){/*error ocurred*/
@@ -153,14 +152,14 @@ If you need more, please contact with our sales deparment\n");
                 }
                 else if (temppid == 0){ /*date*/
                     if (signal(SIGUSR1, SIG_IGN) == SIG_ERR) {
-                       printf(" Impossible to ignore SIGUSR1\n");
+                       printf("Impossible to ignore SIGUSR1\n");
                     }
                     
                     if (signal(SIGINT, SIGINT_handler) == SIG_ERR){
                         fprintf(stderr,"Cannot handle SIG_INT.\n");
                         exit(EXIT_FAILURE);
                     }
-                    while(1);
+                    
                 }
                 else{
                     child_pids[child_num]= temppid;
@@ -186,8 +185,15 @@ If you need more, please contact with our sales deparment\n");
                 break;
         }
     }
-    printf("Just wait a second. We're doing safe exit\n");
+    printf("Just wait a second. We're doing safe exit.\n");
     //TODO: salida segura del programa
-    printf("It's done, we always code safe\n");
+    for(int i; i< MAX_NUM_PIDS; i++){
+        kill(child_pids[i], SIGKILL);
+    }
     //TODO: safe exit
+    for(int i; i< MAX_NUM_PIDS; i++){
+        wait(child_pids[i]);
+    }
+    printf("It's done. We always code safe.\n");
+    exit(EXIT_SUCCESS);
 }
