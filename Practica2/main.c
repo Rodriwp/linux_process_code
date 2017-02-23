@@ -63,13 +63,16 @@ void main(){
     
     pid_t temppid = 0;
     pid_t child_pids[MAX_NUM_PIDS];
+    int child_num = 0;
     //Case 4 PPT
 
     //Signals
     if (signal(SIGUSR1, backupend_handler) == SIG_ERR) {
        printf(" Impossible catching SIGUSR1\n");
     }
-    signal(SIGINT, SIG_IGN);
+    if (signal(SIGINT, SIG_IGN) == SIG_ERR) {
+       printf(" Impossible to ignore SIGINT\n");
+    }
     //Loop
     while(daemon){
         print_menu();
@@ -136,20 +139,32 @@ void main(){
                 }
                 break;
             case 3:
-                //TODO:TIME
-                temppid = fork();
+                if(child_num < MAX_NUM_PIDS){
+                    temppid = fork();
+                }
+                else{
+                    printf("You have already enought time daemons. \n\
+                           If you need more, please contact with our sales deparment\n");
+                    break;
+                }
                 if (temppid < 0){/*error ocurred*/
                     perror("Fork failed.");
                     exit(EXIT_FAILURE);
                 }
                 else if (temppid == 0){ /*date*/
-                    signal(SIGUSR1, SIG_IGN);
+                    if (signal(SIGUSR1, SIG_IGN) == SIG_ERR) {
+                       printf(" Impossible to ignore SIGUSR1\n");
+                    }
                     
                     if (signal(SIGINT, SIGINT_handler) == SIG_ERR){
                         fprintf(stderr,"Cannot handle SIG_INT.\n");
                         exit(EXIT_FAILURE);
                     }
                     while(1);
+                }
+                else{
+                    child_pids[child_num]= temppid;
+                    child_num++;
                 }
                 break;
             case 4:
