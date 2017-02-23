@@ -144,7 +144,7 @@ void main(){
                 }
                 else{
                     printf("You have already enought time daemons. \n\
-                           If you need more, please contact with our sales deparment\n");
+If you need more, please contact with our sales deparment\n");
                     break;
                 }
                 if (temppid < 0){/*error ocurred*/
