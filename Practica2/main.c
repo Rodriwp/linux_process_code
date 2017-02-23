@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <signal.h>
 
 void print_menu(){
     printf("\n******************Manager application********************\n\
@@ -15,7 +17,21 @@ void print_menu(){
            \t\tSelect option:");
 }
 
+static void SIG_INT_handler (int signo){
+    if (signo == SIG_INT){
+	system("date -u");
+	exit(EXIT_SUCCESS);
+    }else
+    {
+	
+    }
+
+}
+
 void main(){
+    int SIG_INT_handler = 2;
+    int *signal(int signo, void (*SIG_INT_handler)(int)));
+    
     int daemon = 1;
     int selec = 0;
     int temppid = 0;
@@ -27,7 +43,7 @@ void main(){
             case 1:
                 temppid = fork();
                 if (temppid < 0){ /* error occurred */
-                    perror("Fork Failed");
+                    perror("Fork failed.");
                     exit(EXIT_FAILURE);
                 }
                 else if (temppid == 0) { /* edit.p */
@@ -46,13 +62,28 @@ void main(){
                 break;
             case 3:
                 //TODO:TIME
+                temppid = fork();
+                if (temppid < 0){/*error ocurred*/
+                    perror("Fork failed.");
+                    exit(EXIT_FAILURE);
+                }
+                else if(temppid == 0){ /*date*/
+                    // Crear handle con la funcion date
+                    while(1){
+                        if(signal (SIG_INT, SIG_INT_handler) == SIG_ERR)
+			    {
+			    fprintf(stderr,"Cannot handle SIG_INT.\n");
+			    exit(EXIT_FAILURE);
+			}
+                    }
+                }
                 break;
             case 4:
                 daemon = 0;
-                printf("Thanks for using our manager app. See you soon\n");
+                printf("Thanks for using our manager app. See you soon!\n");
                 break;
             default:
-                printf("\nInvalid Option. Please try again\n");
+                printf("\nInvalid Option. Please try again.\n");
                 break;
         }
     }
