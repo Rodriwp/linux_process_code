@@ -17,24 +17,29 @@ void print_menu(){
            \t\tSelect option:");
 }
 
-static void SIG_INT_handler (int signo){
-    if (signo == SIG_INT){
-	system("date -u");
-	exit(EXIT_SUCCESS);
-    }else
-    {
-	
+static void SIGINT_handler (int signo){
+    if (signo == SIGINT){
+        static int change = 0;
+        
+        if (change % 2 == 0)
+            system("date\n");
+        else
+            system("date -u\n");
+        change++;
     }
-
+    else{
+	fprintf(stderr, "Se ha producido un error al manejar la señal.\n");
+        exit(EXIT_FAILURE);
+    }
 }
 
 void main(){
-    int SIG_INT_handler = 2;
-    int *signal(int signo, void (*SIG_INT_handler)(int)));
+    signal(SIGINT, SIG_IGN);
     
     int daemon = 1;
     int selec = 0;
     int temppid = 0;
+
     while(daemon){
         print_menu();
         if(scanf("%d",&selec)!= 1){
@@ -67,15 +72,14 @@ void main(){
                     perror("Fork failed.");
                     exit(EXIT_FAILURE);
                 }
-                else if(temppid == 0){ /*date*/
-                    // Crear handle con la funcion date
-                    while(1){
-                        if(signal (SIG_INT, SIG_INT_handler) == SIG_ERR)
-			    {
-			    fprintf(stderr,"Cannot handle SIG_INT.\n");
-			    exit(EXIT_FAILURE);
-			}
+                else if (temppid == 0){ /*date*/
+                    signal(SIGUSR1, SIG_IGN);
+                    
+                    if (signal(SIGINT, SIGINT_handler) == SIG_ERR){
+                        fprintf(stderr,"Cannot handle SIG_INT.\n");
+                        exit(EXIT_FAILURE);
                     }
+                    while(1);
                 }
                 break;
             case 4:
