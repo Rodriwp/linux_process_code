@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
+#include <sys/types.h>
 #include <signal.h>
 # include <pthread.h>
 
@@ -31,7 +33,24 @@ void print_menu(){
            \t\tSelect option:");
 }
 
+static void SIGINT_handler (int signo){
+    if (signo == SIGINT){
+        static int change = 0;
+        
+        if (change % 2 == 0)
+            system("date\n");
+        else
+            system("date -u\n");
+        change++;
+    }
+    else{
+	fprintf(stderr, "Se ha producido un error al manejar la señal.\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
 void main(){
+
     //PIPE variables
     int fd[2];
     int n_read;
@@ -41,6 +60,7 @@ void main(){
     int selec = 0;
     char filepath[MAX_FILEPATH_SIZE];
     //Case 3 variables
+    
     pid_t temppid = 0;
     pid_t child_pids[MAX_NUM_PIDS];
     //Case 4 PPT
@@ -49,6 +69,7 @@ void main(){
     if (signal(SIGUSR1, backupend_handler) == SIG_ERR) {
        printf(" Impossible catching SIGUSR1\n");
     }
+    signal(SIGINT, SIG_IGN);
     //Loop
     while(daemon){
         print_menu();
@@ -59,7 +80,7 @@ void main(){
             case 1:
                 temppid = fork();
                 if (temppid < 0){ /* error occurred */
-                    perror("Fork Failed");
+                    perror("Fork failed.");
                     exit(EXIT_FAILURE);
                 }
                 else if (temppid == 0) { /* edit.p */
@@ -116,6 +137,20 @@ void main(){
                 break;
             case 3:
                 //TODO:TIME
+                temppid = fork();
+                if (temppid < 0){/*error ocurred*/
+                    perror("Fork failed.");
+                    exit(EXIT_FAILURE);
+                }
+                else if (temppid == 0){ /*date*/
+                    signal(SIGUSR1, SIG_IGN);
+                    
+                    if (signal(SIGINT, SIGINT_handler) == SIG_ERR){
+                        fprintf(stderr,"Cannot handle SIG_INT.\n");
+                        exit(EXIT_FAILURE);
+                    }
+                    while(1);
+                }
                 break;
             case 4:
                 printf("Give me the passfile: ");
@@ -129,10 +164,10 @@ void main(){
                 break;
             case 5:
                 daemon = 0;
-                printf("Thanks for using our manager app. See you soon\n");
+                printf("Thanks for using our manager app. See you soon!\n");
                 break;
             default:
-                printf("\nInvalid Option. Please try again\n");
+                printf("\nInvalid Option. Please try again.\n");
                 break;
         }
     }
