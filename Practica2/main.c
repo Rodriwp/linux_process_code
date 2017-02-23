@@ -15,7 +15,8 @@
 void backupend_handler(){
     printf("\n\n CHILD:The BackUp is finished. Time for me to died father\n\n");
 }
-
+/* cASE 4*/
+/* PRINTING FUNCTIONS*/
 void print_menu(){
     printf("\n******************Manager application********************\n\
            \n\
@@ -124,6 +125,8 @@ void main(){
                 }
                 //TODO: caso hebras
                 //pthread_create(thread,NULL,week_password,NULL);
+
+                break;
             case 5:
                 daemon = 0;
                 printf("Thanks for using our manager app. See you soon\n");
