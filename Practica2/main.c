@@ -2,11 +2,14 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
+# include <pthread.h>
+
 #define MAX_NUM_PIDS 10
 #define PASS_FILE_PATH "./passfile"
 #define BACKUP_PASS_FILE_PATH "./backup_passfile"
 #define PASS_FILE_NAME "passfile"
 #define PASSLINE 10
+#define MAX_FILEPATH_SIZE 200
 
 /*Signals*/
 void backupend_handler(){
@@ -21,7 +24,8 @@ void print_menu(){
            [1] Edit pass file\n\
            [2] Backup copy\n\
            [3] Automatic time display (CNTRL-C for CET/UTC display change)\n\
-           [4] Ordered shutdown\n\
+           [4] PPT: Parrallel Password Treatment\n\
+           [5] Ordered shutdown\n\
            \n\
            \t\tSelect option:");
 }
@@ -34,9 +38,12 @@ void main(){
     //Control variables
     int daemon = 1;
     int selec = 0;
+    char filepath[MAX_FILEPATH_SIZE];
     //Case 3 variables
     pid_t temppid = 0;
     pid_t child_pids[MAX_NUM_PIDS];
+    //Case 4 PPT
+
     //Signals
     if (signal(SIGUSR1, backupend_handler) == SIG_ERR) {
        printf(" Impossible catching SIGUSR1\n");
@@ -63,6 +70,11 @@ void main(){
                 }
                 break;
             case 2:
+                printf("Give me the passfile: ");
+                if(scanf("%s",filepath)!= 1){
+                    printf("We need the path to the file. Try again\n");
+                    break;
+                }
                 if (pipe(fd) < 0) {
                     printf("Error in pipe creation.\n");
                 }
@@ -84,20 +96,35 @@ void main(){
                 }
                 else{ /*main */
                     close(fd[0]);
-                    FILE* passfile = fopen (PASS_FILE_PATH, "r");
-                    while(!feof(passfile)){
-                        n_read = fread(buffer,sizeof(char),PASSLINE, passfile);
-                        write(fd[1], buffer, n_read);
+                    FILE* passfile = fopen (filepath, "r");
+                    if(passfile ==  NULL){
+                        printf("Error 404: File Not Found\n");
+                        kill(temppid,SIGKILL);
+                        close(fd[1]);
                     }
-                    close(fd[1]);
-                    fclose(passfile);
-                    printf("\nFATHER:End sending the passfile to my child, I'm operative again\n");
+                    else{
+                        while(!feof(passfile)){
+                            n_read = fread(buffer,sizeof(char),PASSLINE, passfile);
+                            write(fd[1], buffer, n_read);
+                        }
+                        close(fd[1]);
+                        fclose(passfile);
+                        printf("\nFATHER:End sending the passfile to my child, I'm operative again\n");
+                    }
                 }
                 break;
             case 3:
                 //TODO:TIME
                 break;
             case 4:
+                printf("Give me the passfile: ");
+                if(scanf("%s",filepath)!= 1){
+                    printf("We need the path to the file. Try again\n");
+                    break;
+                }
+                //TODO: caso hebras
+                //pthread_create(thread,NULL,week_password,NULL);
+            case 5:
                 daemon = 0;
                 printf("Thanks for using our manager app. See you soon\n");
                 break;
