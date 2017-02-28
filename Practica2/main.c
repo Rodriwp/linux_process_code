@@ -3,12 +3,13 @@
 #include <unistd.h>
 
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <signal.h>
 #include <pthread.h>
 
 #define MAX_NUM_PIDS 10
 #define PASS_FILE_PATH "./passfile"
-#define BACKUP_PASS_FILE_PATH "./backup_passfile"
+#define BACKUP_PASS_FILE_PATH "./.passwords.backup"
 #define PASS_FILE_NAME "passfile"
 #define PASSLINE 10
 #define MAX_FILEPATH_SIZE 200
@@ -167,14 +168,8 @@ void main(){
                 }
                 break;
             case 4:
-                printf("Give me the passfile: ");
-                if(scanf("%s",filepath)!= 1){
-                    printf("We need the path to the file. Try again\n");
-                    break;
-                }
                 //TODO: caso hebras
-                //pthread_create(thread,NULL,week_password,NULL);
-
+                printf("UNIMPLEMENTED \n");
                 break;
             case 5:
                 daemon = 0;
@@ -186,13 +181,13 @@ void main(){
         }
     }
     printf("Just wait a second. We're doing safe exit.\n");
-    //TODO: salida segura del programa
-    for(int i; i< MAX_NUM_PIDS; i++){
+    int i = 0;
+    int status = 0;
+    for(i=0; i< child_num; i++){
         kill(child_pids[i], SIGKILL);
     }
-    //TODO: safe exit
-    for(int i; i< MAX_NUM_PIDS; i++){
-        wait(child_pids[i]);
+    for(i=0; i< child_num; i++){
+        waitpid(child_pids[i],&status,0);
     }
     printf("It's done. We always code safe.\n");
     exit(EXIT_SUCCESS);
