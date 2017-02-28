@@ -3,12 +3,13 @@
 #include <unistd.h>
 
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <signal.h>
-# include <pthread.h>
+#include <pthread.h>
 
 #define MAX_NUM_PIDS 10
 #define PASS_FILE_PATH "./passfile"
-#define BACKUP_PASS_FILE_PATH "./backup_passfile"
+#define BACKUP_PASS_FILE_PATH "./.passwords.backup"
 #define PASS_FILE_NAME "passfile"
 #define PASSLINE 10
 #define MAX_FILEPATH_SIZE 200
@@ -76,7 +77,7 @@ void main(){
     //Loop
     while(daemon){
         print_menu();
-        if(scanf("%d",&selec)!= 1){
+        if(scanf("%i",&selec)!= 1){
             selec = 0;
         }
         switch(selec){
@@ -143,8 +144,7 @@ void main(){
                     temppid = fork();
                 }
                 else{
-                    printf("You have already enought time daemons. \n\
-If you need more, please contact with our sales deparment\n");
+                    printf("You have already enought time daemons.\nIf you need more, please contact with our sales deparment\n");
                     break;
                 }
                 if (temppid < 0){/*error ocurred*/
@@ -153,14 +153,14 @@ If you need more, please contact with our sales deparment\n");
                 }
                 else if (temppid == 0){ /*date*/
                     if (signal(SIGUSR1, SIG_IGN) == SIG_ERR) {
-                       printf(" Impossible to ignore SIGUSR1\n");
+                       printf("Impossible to ignore SIGUSR1\n");
                     }
                     
                     if (signal(SIGINT, SIGINT_handler) == SIG_ERR){
                         fprintf(stderr,"Cannot handle SIG_INT.\n");
                         exit(EXIT_FAILURE);
                     }
-                    while(1);
+                    
                 }
                 else{
                     child_pids[child_num]= temppid;
@@ -168,14 +168,8 @@ If you need more, please contact with our sales deparment\n");
                 }
                 break;
             case 4:
-                printf("Give me the passfile: ");
-                if(scanf("%s",filepath)!= 1){
-                    printf("We need the path to the file. Try again\n");
-                    break;
-                }
                 //TODO: caso hebras
-                //pthread_create(thread,NULL,week_password,NULL);
-
+                printf("UNIMPLEMENTED \n");
                 break;
             case 5:
                 daemon = 0;
@@ -186,8 +180,15 @@ If you need more, please contact with our sales deparment\n");
                 break;
         }
     }
-    printf("Just wait a second. We're doing safe exit\n");
-    //TODO: salida segura del programa
-    printf("It's done, we always code safe\n");
-    //TODO: safe exit
+    printf("Just wait a second. We're doing safe exit.\n");
+    int i = 0;
+    int status = 0;
+    for(i=0; i< child_num; i++){
+        kill(child_pids[i], SIGKILL);
+    }
+    for(i=0; i< child_num; i++){
+        waitpid(child_pids[i],&status,0);
+    }
+    printf("It's done. We always code safe.\n");
+    exit(EXIT_SUCCESS);
 }
