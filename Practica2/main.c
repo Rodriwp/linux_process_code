@@ -14,6 +14,7 @@
 #define PASSLINE 10
 #define MAX_FILEPATH_SIZE 200
 #define NUM_THREADS 2
+#define PWDS_LENGTH 10
 
 /*Signals*/
 void backupend_handler(){
@@ -37,8 +38,8 @@ void print_menu(){
 
 /*Funcion del Apartado 4*/
 void *edit_pwd(void *t){
-    
-    pthread_exit(NULL);
+    t = "";
+    //pthread_exit(NULL);
 }
 
 
@@ -75,7 +76,7 @@ void main(){
     pid_t child_pids[MAX_NUM_PIDS];
     int child_num = 0;
     //Case 4 PPT
-    char *claves[PASSLINE];
+    char (claves[PASSLINE])[PWDS_LENGTH];
     pthread_t threads [NUM_THREADS];
     int t, rc;
 
@@ -181,29 +182,54 @@ void main(){
                 break;
             case 4:
                 //TODO: caso hebras
-                temppid = fork();
-                if(fork < 0){//error ocurred
+                if(child_num < MAX_NUM_PIDS){
+                    temppid = fork();
+                }
+                else{
+                    printf("You have already enought time daemons.\nIf you need more, please contact with our sales deparment\n");
+                    break;
+                }
+                if(temppid < 0){//error ocurred
                     perror("Fork failed.");
+                    exit(EXIT_FAILURE);
                 }
                 else if(temppid == 0){//proceso hijo
-                                        
+                    
+                    
+                    FILE* stdin;
+                    FILE* passfile;
+                    
+                    fgets (filepath, MAX_FILEPATH_SIZE, stdin);
                     printf("Introduce the name of the passfile to make it secure.\n");
-                    scanf("%s",&filepath);
-                    FILE* passfile = fopen(filepath, "r+");
+                    printf("hododo");
+                    
+                    if(strcmp(filepath, PASS_FILE_NAME) == 0)
+                        passfile = fopen(filepath, "r+");
+                    else
+                        printf("El fichero no existe. Inténtelo de nuevo");
+                    
+                    /*Lectura del fichero de contrasenias*/
+                    int i;
+                    for(i=0; i< PASSLINE; i++){
+                        fgets(claves[i],PWDS_LENGTH,passfile);
+                    }
+                    fclose(passfile);
+                    printf(claves[0]);
+                    
                     
                     for (t = 0; t < NUM_THREADS; t++){//Threads creation
-                        rc = pthread_create(&threads[t],NULL,edit_pwd, t);
+                        rc = pthread_create(&threads[t],NULL,edit_pwd,t);
                         if(rc){//error ocurred
-                        perror("Thread creation failed.");
-                        exit(EXIT_FAILURE);
+//                         //perror("Thread creation failed.");
+//                         //exit(EXIT_FAILURE);
+//                         }
                         }
                     }
-                    pthread_exit(NULL);
                 }
-                else{//proceso padre
+                else{//main
                     
                 }
-                pthread_exit(NULL);
+                //pthread_exit(NULL);
                 break;
             case 5:
                 daemon = 0;
