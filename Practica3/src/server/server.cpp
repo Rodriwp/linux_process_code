@@ -4,6 +4,21 @@
 using namespace std;
 using namespace UC3M;
 
+namespace UC3M
+{
+
+class StringServiceI : virtual public StringService
+{
+public:
+
+    virtual ::Ice::Int stringSize(const ::std::string&,
+                                  const Ice::Current&);
+
+    virtual ::std::string toUpperCase(const ::std::string&,
+                                      const Ice::Current&);
+};
+
+}
 int main(int argc, char* argv[])
 {
     int status = 0;
