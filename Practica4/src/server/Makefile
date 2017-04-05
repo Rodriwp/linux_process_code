@@ -2,7 +2,7 @@ SRC = UserManager.cpp server.cpp
 
 all: server
 
-my_route_lookup: $(SRC)
+server: $(SRC)
 	gcc -I. -c $(SRC)
 	gcc -o server server.o UserManager.o -lIce -lIceUtil -pthread -lstdc++
 
@@ -10,4 +10,3 @@ my_route_lookup: $(SRC)
 
 clean:
 	rm -f  server
-
