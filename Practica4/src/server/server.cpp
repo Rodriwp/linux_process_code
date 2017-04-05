@@ -47,6 +47,7 @@ int main(int argc, char* argv[])
 CallSystem::UserManagerI::darAlta(::Ice::Int dni,
                                   const Ice::Current& current)
 {
+    cout << dni << endl;
     return dni;
 }
 

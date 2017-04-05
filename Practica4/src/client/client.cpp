@@ -4,10 +4,11 @@
 using namespace std;
 using namespace CallSystem;
 
+const int SHUTDOWN = 4;
+const int GETLINE_LEN = 256;
+
 int main(int argc, char* argv[])
 {
-    const int SHUTDOWN = 4;
-    const int GETLINE_LEN = 256;
     int status = 0;
     Ice::CommunicatorPtr ic;
     try {
