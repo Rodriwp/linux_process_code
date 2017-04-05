@@ -47,12 +47,13 @@ int main(int argc, char* argv[])
 CallSystem::UserManagerI::darAlta(::Ice::Int dni,
                                   const Ice::Current& current)
 {
+
     cout << dni << endl;
     return dni;
 }
 
 ::Ice::Int
-CallSystem::UserManagerI::comprarMinutos(::Ice::Int minutos,
+CallSystem::UserManagerI::comprarMinutos(::Ice::Int dni,::Ice::Int minutos,
                                          const Ice::Current& current)
 {
     return 2;
@@ -64,4 +65,10 @@ CallSystem::UserManagerI::avisarConsumo(::Ice::Int dni,
                                         const Ice::Current& current)
 {
     return 3;
+}
+int searchClient(int dni){
+  vector<client_t>::iterator it;
+  for(it = datos_cl.begin();it < datos_cl.end();it++,i++){
+    
+  }
 }
