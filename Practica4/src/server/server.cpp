@@ -11,23 +11,21 @@ typedef struct client{
      unsigned int minutos;
      unsigned int lim;
 }client_t;
-static vector<client_t> datos_cl(MAX_NUM_CLIENT);
+static vector<client_t> datos_cl;
 
 int status = 0;
 Ice::CommunicatorPtr ic;
 
-vector<client_t>::iterator searchClient(int dni){
-  vector<client_t>::iterator it;
-  for(it = datos_cl.begin();it < datos_cl.end();it++){
-      if(datos_cl[it].dni == dni)
-        return it;
+int searchClient(unsigned int dni){
+  for(int i = 0;i < datos_cl.size();i++){
+      if(datos_cl.at(i).dni == dni)
+        return i;
   }
-  return NULL;
+  return 0;
 }
 void printUsers(){
-  vector<client_t>::iterator it;
-  for(it = datos_cl.begin();it < datos_cl.end();it++){
-    cout << "DNI: "<<datos_cl[it].dni << " | " << datos_cl[it].minutos << endl;
+  for(int i = 0;i < datos_cl.size();i++){
+    cout << "DNI: "<<datos_cl.at(i).dni << " | " << datos_cl.at(i).minutos << endl;
   }
 }
 
@@ -40,6 +38,7 @@ void * client_func(void *){
       } while(!remoteService);
       // your client code here!
       while(1){
+        printUsers();
           remoteService->consumAlert(20,1);
           sleep(1);
       }
@@ -92,14 +91,12 @@ void * server_func(void *)
 CallSystem::UserManagerI::darAlta(::Ice::Int dni,
                                   const Ice::Current& current)
 {
-    vector<client_t>::iterator it = searchClient(dni);
-    if(it = NULL){
+    if(searchClient(dni)== 0 && dni != 0){
       client tmp;
       tmp.dni = dni;
       tmp.minutos = 10;//10 minutos de regalo para todos los nuevos clientes
       tmp.lim = 0;
-      it = myvector.end();
-      datos_cl.insert(it,datos_cl.end,&tmp);
+      datos_cl.push_back(tmp);
       return 0;
     }
     return 1;
