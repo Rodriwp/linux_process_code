@@ -1,10 +1,10 @@
-SRC = UserManager.cpp client.cpp 
+SRC = UserManager.cpp AlertSystem.cpp client.cpp
 
 all: client
 
 client: $(SRC)
 	gcc -I. -c $(SRC)
-	gcc -o client client.o UserManager.o -lIce -lIceUtil -pthread -lstdc++
+	gcc -o client client.o UserManager.o AlertSystem.o -lIce -lIceUtil -pthread -lstdc++
 
 .PHONY: clean
 
