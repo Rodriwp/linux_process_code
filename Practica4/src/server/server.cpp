@@ -180,12 +180,14 @@ int main(int argc, char* argv[])
                 printf("Error: pthread_create() failed\n");
                 exit(EXIT_FAILURE);
                 }
+                cout << "Hebra simuladora de consumo arrancada"<< endl;
                 consumo_status = 1;
               }
             break;
             case 3:
               if(consumo_status == 1){
                 pthread_cancel(consumo_pth);
+                cout << "Simulacion de consumo parado"<< endl;
                 consumo_status = 0;
               }
             break;
