@@ -213,39 +213,39 @@ private:
     
 public:
 
-    ::Ice::Int comprarMinutos(::Ice::Int minutos)
+    ::Ice::Int comprarMinutos(::Ice::Int dni, ::Ice::Int minutos)
     {
-        return comprarMinutos(minutos, 0);
+        return comprarMinutos(dni, minutos, 0);
     }
-    ::Ice::Int comprarMinutos(::Ice::Int minutos, const ::Ice::Context& __ctx)
+    ::Ice::Int comprarMinutos(::Ice::Int dni, ::Ice::Int minutos, const ::Ice::Context& __ctx)
     {
-        return comprarMinutos(minutos, &__ctx);
+        return comprarMinutos(dni, minutos, &__ctx);
     }
 #ifdef ICE_CPP11
     ::Ice::AsyncResultPtr
-    begin_comprarMinutos(::Ice::Int minutos, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_comprarMinutos(::Ice::Int dni, ::Ice::Int minutos, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return __begin_comprarMinutos(minutos, 0, __response, __exception, __sent);
+        return __begin_comprarMinutos(dni, minutos, 0, __response, __exception, __sent);
     }
     ::Ice::AsyncResultPtr
-    begin_comprarMinutos(::Ice::Int minutos, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_comprarMinutos(::Ice::Int dni, ::Ice::Int minutos, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_comprarMinutos(minutos, 0, ::Ice::newCallback(__completed, __sent), 0);
+        return begin_comprarMinutos(dni, minutos, 0, ::Ice::newCallback(__completed, __sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_comprarMinutos(::Ice::Int minutos, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_comprarMinutos(::Ice::Int dni, ::Ice::Int minutos, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return __begin_comprarMinutos(minutos, &__ctx, __response, __exception, __sent);
+        return __begin_comprarMinutos(dni, minutos, &__ctx, __response, __exception, __sent);
     }
     ::Ice::AsyncResultPtr
-    begin_comprarMinutos(::Ice::Int minutos, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_comprarMinutos(::Ice::Int dni, ::Ice::Int minutos, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_comprarMinutos(minutos, &__ctx, ::Ice::newCallback(__completed, __sent));
+        return begin_comprarMinutos(dni, minutos, &__ctx, ::Ice::newCallback(__completed, __sent));
     }
     
 private:
 
-    ::Ice::AsyncResultPtr __begin_comprarMinutos(::Ice::Int minutos, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+    ::Ice::AsyncResultPtr __begin_comprarMinutos(::Ice::Int dni, ::Ice::Int minutos, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
     {
         class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
         {
@@ -281,48 +281,48 @@ private:
             
             ::std::function<void (::Ice::Int)> _response;
         };
-        return begin_comprarMinutos(minutos, __ctx, new Cpp11CB(__response, __exception, __sent));
+        return begin_comprarMinutos(dni, minutos, __ctx, new Cpp11CB(__response, __exception, __sent));
     }
     
 public:
 #endif
 
-    ::Ice::AsyncResultPtr begin_comprarMinutos(::Ice::Int minutos)
+    ::Ice::AsyncResultPtr begin_comprarMinutos(::Ice::Int dni, ::Ice::Int minutos)
     {
-        return begin_comprarMinutos(minutos, 0, ::IceInternal::__dummyCallback, 0);
+        return begin_comprarMinutos(dni, minutos, 0, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_comprarMinutos(::Ice::Int minutos, const ::Ice::Context& __ctx)
+    ::Ice::AsyncResultPtr begin_comprarMinutos(::Ice::Int dni, ::Ice::Int minutos, const ::Ice::Context& __ctx)
     {
-        return begin_comprarMinutos(minutos, &__ctx, ::IceInternal::__dummyCallback, 0);
+        return begin_comprarMinutos(dni, minutos, &__ctx, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_comprarMinutos(::Ice::Int minutos, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_comprarMinutos(::Ice::Int dni, ::Ice::Int minutos, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_comprarMinutos(minutos, 0, __del, __cookie);
+        return begin_comprarMinutos(dni, minutos, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_comprarMinutos(::Ice::Int minutos, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_comprarMinutos(::Ice::Int dni, ::Ice::Int minutos, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_comprarMinutos(minutos, &__ctx, __del, __cookie);
+        return begin_comprarMinutos(dni, minutos, &__ctx, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_comprarMinutos(::Ice::Int minutos, const ::CallSystem::Callback_UserManager_comprarMinutosPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_comprarMinutos(::Ice::Int dni, ::Ice::Int minutos, const ::CallSystem::Callback_UserManager_comprarMinutosPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_comprarMinutos(minutos, 0, __del, __cookie);
+        return begin_comprarMinutos(dni, minutos, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_comprarMinutos(::Ice::Int minutos, const ::Ice::Context& __ctx, const ::CallSystem::Callback_UserManager_comprarMinutosPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_comprarMinutos(::Ice::Int dni, ::Ice::Int minutos, const ::Ice::Context& __ctx, const ::CallSystem::Callback_UserManager_comprarMinutosPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_comprarMinutos(minutos, &__ctx, __del, __cookie);
+        return begin_comprarMinutos(dni, minutos, &__ctx, __del, __cookie);
     }
 
     ::Ice::Int end_comprarMinutos(const ::Ice::AsyncResultPtr&);
     
 private:
 
-    ::Ice::Int comprarMinutos(::Ice::Int, const ::Ice::Context*);
-    ::Ice::AsyncResultPtr begin_comprarMinutos(::Ice::Int, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    ::Ice::Int comprarMinutos(::Ice::Int, ::Ice::Int, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_comprarMinutos(::Ice::Int, ::Ice::Int, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
 
@@ -564,7 +564,7 @@ public:
 
     virtual ::Ice::Int darAlta(::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
 
-    virtual ::Ice::Int comprarMinutos(::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
+    virtual ::Ice::Int comprarMinutos(::Ice::Int, ::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
 
     virtual ::Ice::Int avisarConsumo(::Ice::Int, ::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
 };
@@ -586,7 +586,7 @@ public:
 
     virtual ::Ice::Int darAlta(::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
-    virtual ::Ice::Int comprarMinutos(::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+    virtual ::Ice::Int comprarMinutos(::Ice::Int, ::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
     virtual ::Ice::Int avisarConsumo(::Ice::Int, ::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 };
@@ -608,7 +608,7 @@ public:
 
     virtual ::Ice::Int darAlta(::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
-    virtual ::Ice::Int comprarMinutos(::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+    virtual ::Ice::Int comprarMinutos(::Ice::Int, ::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
     virtual ::Ice::Int avisarConsumo(::Ice::Int, ::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 };
@@ -635,7 +635,7 @@ public:
     virtual ::Ice::Int darAlta(::Ice::Int, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___darAlta(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual ::Ice::Int comprarMinutos(::Ice::Int, const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual ::Ice::Int comprarMinutos(::Ice::Int, ::Ice::Int, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___comprarMinutos(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::Ice::Int avisarConsumo(::Ice::Int, ::Ice::Int, const ::Ice::Current& = ::Ice::Current()) = 0;

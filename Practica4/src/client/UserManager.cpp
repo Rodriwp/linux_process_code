@@ -143,7 +143,7 @@ IceProxy::CallSystem::UserManager::end_darAlta(const ::Ice::AsyncResultPtr& __re
 }
 
 ::Ice::Int
-IceProxy::CallSystem::UserManager::comprarMinutos(::Ice::Int minutos, const ::Ice::Context* __ctx)
+IceProxy::CallSystem::UserManager::comprarMinutos(::Ice::Int dni, ::Ice::Int minutos, const ::Ice::Context* __ctx)
 {
     ::IceInternal::InvocationObserver __observer(this, __CallSystem__UserManager__comprarMinutos_name, __ctx);
     int __cnt = 0;
@@ -155,7 +155,7 @@ IceProxy::CallSystem::UserManager::comprarMinutos(::Ice::Int minutos, const ::Ic
             __checkTwowayOnly(__CallSystem__UserManager__comprarMinutos_name);
             __delBase = __getDelegate(false);
             ::IceDelegate::CallSystem::UserManager* __del = dynamic_cast< ::IceDelegate::CallSystem::UserManager*>(__delBase.get());
-            return __del->comprarMinutos(minutos, __ctx, __observer);
+            return __del->comprarMinutos(dni, minutos, __ctx, __observer);
         }
         catch(const ::IceInternal::LocalExceptionWrapper& __ex)
         {
@@ -169,7 +169,7 @@ IceProxy::CallSystem::UserManager::comprarMinutos(::Ice::Int minutos, const ::Ic
 }
 
 ::Ice::AsyncResultPtr
-IceProxy::CallSystem::UserManager::begin_comprarMinutos(::Ice::Int minutos, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+IceProxy::CallSystem::UserManager::begin_comprarMinutos(::Ice::Int dni, ::Ice::Int minutos, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
 {
     __checkAsyncTwowayOnly(__CallSystem__UserManager__comprarMinutos_name);
     ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __CallSystem__UserManager__comprarMinutos_name, __del, __cookie);
@@ -177,6 +177,7 @@ IceProxy::CallSystem::UserManager::begin_comprarMinutos(::Ice::Int minutos, cons
     {
         __result->__prepare(__CallSystem__UserManager__comprarMinutos_name, ::Ice::Normal, __ctx);
         ::IceInternal::BasicStream* __os = __result->__startWriteParams(::Ice::DefaultFormat);
+        __os->write(dni);
         __os->write(minutos);
         __result->__endWriteParams();
         __result->__send(true);
@@ -363,12 +364,13 @@ IceDelegateM::CallSystem::UserManager::darAlta(::Ice::Int dni, const ::Ice::Cont
 }
 
 ::Ice::Int
-IceDelegateM::CallSystem::UserManager::comprarMinutos(::Ice::Int minutos, const ::Ice::Context* __context, ::IceInternal::InvocationObserver& __observer)
+IceDelegateM::CallSystem::UserManager::comprarMinutos(::Ice::Int dni, ::Ice::Int minutos, const ::Ice::Context* __context, ::IceInternal::InvocationObserver& __observer)
 {
     ::IceInternal::Outgoing __og(__handler.get(), __CallSystem__UserManager__comprarMinutos_name, ::Ice::Normal, __context, __observer);
     try
     {
         ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(dni);
         __os->write(minutos);
         __og.endWriteParams();
     }
@@ -514,15 +516,16 @@ IceDelegateD::CallSystem::UserManager::darAlta(::Ice::Int dni, const ::Ice::Cont
 }
 
 ::Ice::Int
-IceDelegateD::CallSystem::UserManager::comprarMinutos(::Ice::Int minutos, const ::Ice::Context* __context, ::IceInternal::InvocationObserver&)
+IceDelegateD::CallSystem::UserManager::comprarMinutos(::Ice::Int dni, ::Ice::Int minutos, const ::Ice::Context* __context, ::IceInternal::InvocationObserver&)
 {
     class _DirectI : public ::IceInternal::Direct
     {
     public:
 
-        _DirectI(::Ice::Int& __result, ::Ice::Int __p_minutos, const ::Ice::Current& __current) : 
+        _DirectI(::Ice::Int& __result, ::Ice::Int __p_dni, ::Ice::Int __p_minutos, const ::Ice::Current& __current) : 
             ::IceInternal::Direct(__current),
             _result(__result),
+            _m_dni(__p_dni),
             _m_minutos(__p_minutos)
         {
         }
@@ -535,13 +538,14 @@ IceDelegateD::CallSystem::UserManager::comprarMinutos(::Ice::Int minutos, const 
             {
                 throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
             }
-            _result = servant->comprarMinutos(_m_minutos, _current);
+            _result = servant->comprarMinutos(_m_dni, _m_minutos, _current);
             return ::Ice::DispatchOK;
         }
         
     private:
         
         ::Ice::Int& _result;
+        ::Ice::Int _m_dni;
         ::Ice::Int _m_minutos;
     };
     
@@ -550,7 +554,7 @@ IceDelegateD::CallSystem::UserManager::comprarMinutos(::Ice::Int minutos, const 
     ::Ice::Int __result;
     try
     {
-        _DirectI __direct(__result, minutos, __current);
+        _DirectI __direct(__result, dni, minutos, __current);
         try
         {
             __direct.getServant()->__collocDispatch(__direct);
@@ -707,10 +711,12 @@ CallSystem::UserManager::___comprarMinutos(::IceInternal::Incoming& __inS, const
 {
     __checkMode(::Ice::Normal, __current.mode);
     ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::Ice::Int dni;
     ::Ice::Int minutos;
+    __is->read(dni);
     __is->read(minutos);
     __inS.endReadParams();
-    ::Ice::Int __ret = comprarMinutos(minutos, __current);
+    ::Ice::Int __ret = comprarMinutos(dni, minutos, __current);
     ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
     __os->write(__ret);
     __inS.__endWriteParams(true);

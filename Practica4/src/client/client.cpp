@@ -6,7 +6,6 @@ using namespace std;
 using namespace CallSystem;
 
 const int SHUTDOWN = 4;
-const int GETLINE_LEN = 256;
 int status = 0;
 Ice::CommunicatorPtr ic;
 
@@ -20,12 +19,44 @@ void * client_func(void *){
           throw "Invalid proxy";
       // your client code here!
       int option = 0;
-      char str_input[GETLINE_LEN];
+      int dni = 0;
+      int minutos = 0;
       do{
-          std::cout << "Please, enter your number: ";
-          std::cin.getline (str_input,GETLINE_LEN);
-          option = atoi(str_input);
-          remoteService->darAlta(option);
+          cout << "\nSeleciona una opción: "<< endl;
+          cout << "\t[1] Dar de alta" << endl;
+          cout << "\t[2] Comprar minutos" << endl;
+          cout << "\t[3] Avisar de consumo" << endl;
+          cout << "\t[4] Apagar" << endl;
+          cin >> option;
+          switch(option){
+            case 1:
+              std::cout << "DNI: ";
+              std::cin >> dni;
+              if(remoteService->darAlta(dni)==1){
+                  cout << "El DNI: "<<dni<<" ya esta en el sistema"<<endl;
+                }
+            break;
+            case 2:
+                cout << "DNI: ";
+                cin >> dni;
+                cout << "Minutos: ";
+                cin >> minutos;
+                if(remoteService->comprarMinutos(dni,minutos)==1){
+                    cout << "El DNI: "<<dni<<" no esta en el sistema"<<endl;
+                  }
+            break;
+            case 3:
+                cout << "DNI: ";
+                cin >> dni;
+                cout << "Aviso de Limite de Minutos : ";
+                cin >> minutos;
+                if(remoteService->avisarConsumo(dni,minutos)==1){
+                    std::cout << "El DNI: "<<dni<<"  no esta en el sistema"<<endl;
+                  }
+            break;
+            default:
+            break;
+          }
       }while(option != SHUTDOWN);
   } catch (const Ice::Exception& ex) {
       cerr << ex << endl;
@@ -73,16 +104,25 @@ CallSystem::AlertSystemI::consumAlert(::Ice::Int dni,
 }
 int main(int argc, char* argv[])
 {
+  int ret;
   ic = Ice::initialize(argc, argv);
 
   pthread_t client_pth;
   pthread_t server_pth;
 
-  pthread_create(&server_pth, NULL, &server_func, NULL);
-  pthread_create(&client_pth, NULL, &client_func, NULL);
+  ret = pthread_create(&server_pth, NULL, &server_func, NULL);
+  if(ret != 0) {
+                printf("Error: pthread_create() failed\n");
+                exit(EXIT_FAILURE);
+  }
+  ret = pthread_create(&client_pth, NULL, &client_func, NULL);
+  if(ret != 0) {
+                printf("Error: pthread_create() failed\n");
+                exit(EXIT_FAILURE);
+  }
 
   pthread_join(client_pth, NULL);
   pthread_join(server_pth, NULL);
-
+  //TODO: informar al servidor de la terminación
   exit(status);
 }
