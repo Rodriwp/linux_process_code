@@ -88,6 +88,12 @@ typedef ::IceUtil::Handle< Callback_UserManager_comprarMinutos_Base> Callback_Us
 class Callback_UserManager_avisarConsumo_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_UserManager_avisarConsumo_Base> Callback_UserManager_avisarConsumoPtr;
 
+class Callback_UserManager_connect_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_UserManager_connect_Base> Callback_UserManager_connectPtr;
+
+class Callback_UserManager_disconnect_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_UserManager_disconnect_Base> Callback_UserManager_disconnectPtr;
+
 }
 
 namespace IceProxy
@@ -326,39 +332,39 @@ private:
     
 public:
 
-    ::Ice::Int avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold)
+    ::Ice::Int avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::std::string& myip)
     {
-        return avisarConsumo(dni, minutesAlertThreshold, 0);
+        return avisarConsumo(dni, minutesAlertThreshold, myip, 0);
     }
-    ::Ice::Int avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::Ice::Context& __ctx)
+    ::Ice::Int avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::std::string& myip, const ::Ice::Context& __ctx)
     {
-        return avisarConsumo(dni, minutesAlertThreshold, &__ctx);
+        return avisarConsumo(dni, minutesAlertThreshold, myip, &__ctx);
     }
 #ifdef ICE_CPP11
     ::Ice::AsyncResultPtr
-    begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::std::string& myip, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return __begin_avisarConsumo(dni, minutesAlertThreshold, 0, __response, __exception, __sent);
+        return __begin_avisarConsumo(dni, minutesAlertThreshold, myip, 0, __response, __exception, __sent);
     }
     ::Ice::AsyncResultPtr
-    begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::std::string& myip, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_avisarConsumo(dni, minutesAlertThreshold, 0, ::Ice::newCallback(__completed, __sent), 0);
+        return begin_avisarConsumo(dni, minutesAlertThreshold, myip, 0, ::Ice::newCallback(__completed, __sent), 0);
     }
     ::Ice::AsyncResultPtr
-    begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::std::string& myip, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
     {
-        return __begin_avisarConsumo(dni, minutesAlertThreshold, &__ctx, __response, __exception, __sent);
+        return __begin_avisarConsumo(dni, minutesAlertThreshold, myip, &__ctx, __response, __exception, __sent);
     }
     ::Ice::AsyncResultPtr
-    begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::std::string& myip, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
     {
-        return begin_avisarConsumo(dni, minutesAlertThreshold, &__ctx, ::Ice::newCallback(__completed, __sent));
+        return begin_avisarConsumo(dni, minutesAlertThreshold, myip, &__ctx, ::Ice::newCallback(__completed, __sent));
     }
     
 private:
 
-    ::Ice::AsyncResultPtr __begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+    ::Ice::AsyncResultPtr __begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::std::string& myip, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
     {
         class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
         {
@@ -394,48 +400,274 @@ private:
             
             ::std::function<void (::Ice::Int)> _response;
         };
-        return begin_avisarConsumo(dni, minutesAlertThreshold, __ctx, new Cpp11CB(__response, __exception, __sent));
+        return begin_avisarConsumo(dni, minutesAlertThreshold, myip, __ctx, new Cpp11CB(__response, __exception, __sent));
     }
     
 public:
 #endif
 
-    ::Ice::AsyncResultPtr begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold)
+    ::Ice::AsyncResultPtr begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::std::string& myip)
     {
-        return begin_avisarConsumo(dni, minutesAlertThreshold, 0, ::IceInternal::__dummyCallback, 0);
+        return begin_avisarConsumo(dni, minutesAlertThreshold, myip, 0, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::Ice::Context& __ctx)
+    ::Ice::AsyncResultPtr begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::std::string& myip, const ::Ice::Context& __ctx)
     {
-        return begin_avisarConsumo(dni, minutesAlertThreshold, &__ctx, ::IceInternal::__dummyCallback, 0);
+        return begin_avisarConsumo(dni, minutesAlertThreshold, myip, &__ctx, ::IceInternal::__dummyCallback, 0);
     }
 
-    ::Ice::AsyncResultPtr begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::std::string& myip, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_avisarConsumo(dni, minutesAlertThreshold, 0, __del, __cookie);
+        return begin_avisarConsumo(dni, minutesAlertThreshold, myip, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::std::string& myip, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_avisarConsumo(dni, minutesAlertThreshold, &__ctx, __del, __cookie);
+        return begin_avisarConsumo(dni, minutesAlertThreshold, myip, &__ctx, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::CallSystem::Callback_UserManager_avisarConsumoPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::std::string& myip, const ::CallSystem::Callback_UserManager_avisarConsumoPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_avisarConsumo(dni, minutesAlertThreshold, 0, __del, __cookie);
+        return begin_avisarConsumo(dni, minutesAlertThreshold, myip, 0, __del, __cookie);
     }
 
-    ::Ice::AsyncResultPtr begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::Ice::Context& __ctx, const ::CallSystem::Callback_UserManager_avisarConsumoPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    ::Ice::AsyncResultPtr begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::std::string& myip, const ::Ice::Context& __ctx, const ::CallSystem::Callback_UserManager_avisarConsumoPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
     {
-        return begin_avisarConsumo(dni, minutesAlertThreshold, &__ctx, __del, __cookie);
+        return begin_avisarConsumo(dni, minutesAlertThreshold, myip, &__ctx, __del, __cookie);
     }
 
     ::Ice::Int end_avisarConsumo(const ::Ice::AsyncResultPtr&);
     
 private:
 
-    ::Ice::Int avisarConsumo(::Ice::Int, ::Ice::Int, const ::Ice::Context*);
-    ::Ice::AsyncResultPtr begin_avisarConsumo(::Ice::Int, ::Ice::Int, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    ::Ice::Int avisarConsumo(::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_avisarConsumo(::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    ::Ice::Int connect(const ::std::string& myip, const ::std::string& port)
+    {
+        return connect(myip, port, 0);
+    }
+    ::Ice::Int connect(const ::std::string& myip, const ::std::string& port, const ::Ice::Context& __ctx)
+    {
+        return connect(myip, port, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_connect(const ::std::string& myip, const ::std::string& port, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_connect(myip, port, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_connect(const ::std::string& myip, const ::std::string& port, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_connect(myip, port, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_connect(const ::std::string& myip, const ::std::string& port, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_connect(myip, port, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_connect(const ::std::string& myip, const ::std::string& port, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_connect(myip, port, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_connect(const ::std::string& myip, const ::std::string& port, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+    {
+        class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+        {
+        public:
+
+            Cpp11CB(const ::std::function<void (::Ice::Int)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+                ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+                _response(responseFunc)
+            {
+                CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+            }
+
+            virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+            {
+                ::CallSystem::UserManagerPrx __proxy = ::CallSystem::UserManagerPrx::uncheckedCast(__result->getProxy());
+                ::Ice::Int __ret;
+                try
+                {
+                    __ret = __proxy->end_connect(__result);
+                }
+                catch(::Ice::Exception& ex)
+                {
+                    Cpp11FnCallbackNC::__exception(__result, ex);
+                    return;
+                }
+                if(_response != nullptr)
+                {
+                    _response(__ret);
+                }
+            }
+        
+        private:
+            
+            ::std::function<void (::Ice::Int)> _response;
+        };
+        return begin_connect(myip, port, __ctx, new Cpp11CB(__response, __exception, __sent));
+    }
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_connect(const ::std::string& myip, const ::std::string& port)
+    {
+        return begin_connect(myip, port, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_connect(const ::std::string& myip, const ::std::string& port, const ::Ice::Context& __ctx)
+    {
+        return begin_connect(myip, port, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_connect(const ::std::string& myip, const ::std::string& port, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_connect(myip, port, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_connect(const ::std::string& myip, const ::std::string& port, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_connect(myip, port, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_connect(const ::std::string& myip, const ::std::string& port, const ::CallSystem::Callback_UserManager_connectPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_connect(myip, port, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_connect(const ::std::string& myip, const ::std::string& port, const ::Ice::Context& __ctx, const ::CallSystem::Callback_UserManager_connectPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_connect(myip, port, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::Int end_connect(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    ::Ice::Int connect(const ::std::string&, const ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_connect(const ::std::string&, const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    ::Ice::Int disconnect(const ::std::string& myip)
+    {
+        return disconnect(myip, 0);
+    }
+    ::Ice::Int disconnect(const ::std::string& myip, const ::Ice::Context& __ctx)
+    {
+        return disconnect(myip, &__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_disconnect(const ::std::string& myip, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_disconnect(myip, 0, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_disconnect(const ::std::string& myip, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_disconnect(myip, 0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_disconnect(const ::std::string& myip, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return __begin_disconnect(myip, &__ctx, __response, __exception, __sent);
+    }
+    ::Ice::AsyncResultPtr
+    begin_disconnect(const ::std::string& myip, const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_disconnect(myip, &__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+    
+private:
+
+    ::Ice::AsyncResultPtr __begin_disconnect(const ::std::string& myip, const ::Ice::Context* __ctx, const ::IceInternal::Function<void (::Ice::Int)>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception, const ::IceInternal::Function<void (bool)>& __sent)
+    {
+        class Cpp11CB : public ::IceInternal::Cpp11FnCallbackNC
+        {
+        public:
+
+            Cpp11CB(const ::std::function<void (::Ice::Int)>& responseFunc, const ::std::function<void (const ::Ice::Exception&)>& exceptionFunc, const ::std::function<void (bool)>& sentFunc) :
+                ::IceInternal::Cpp11FnCallbackNC(exceptionFunc, sentFunc),
+                _response(responseFunc)
+            {
+                CallbackBase::checkCallback(true, responseFunc || exceptionFunc != nullptr);
+            }
+
+            virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+            {
+                ::CallSystem::UserManagerPrx __proxy = ::CallSystem::UserManagerPrx::uncheckedCast(__result->getProxy());
+                ::Ice::Int __ret;
+                try
+                {
+                    __ret = __proxy->end_disconnect(__result);
+                }
+                catch(::Ice::Exception& ex)
+                {
+                    Cpp11FnCallbackNC::__exception(__result, ex);
+                    return;
+                }
+                if(_response != nullptr)
+                {
+                    _response(__ret);
+                }
+            }
+        
+        private:
+            
+            ::std::function<void (::Ice::Int)> _response;
+        };
+        return begin_disconnect(myip, __ctx, new Cpp11CB(__response, __exception, __sent));
+    }
+    
+public:
+#endif
+
+    ::Ice::AsyncResultPtr begin_disconnect(const ::std::string& myip)
+    {
+        return begin_disconnect(myip, 0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_disconnect(const ::std::string& myip, const ::Ice::Context& __ctx)
+    {
+        return begin_disconnect(myip, &__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_disconnect(const ::std::string& myip, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_disconnect(myip, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_disconnect(const ::std::string& myip, const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_disconnect(myip, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_disconnect(const ::std::string& myip, const ::CallSystem::Callback_UserManager_disconnectPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_disconnect(myip, 0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_disconnect(const ::std::string& myip, const ::Ice::Context& __ctx, const ::CallSystem::Callback_UserManager_disconnectPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_disconnect(myip, &__ctx, __del, __cookie);
+    }
+
+    ::Ice::Int end_disconnect(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    ::Ice::Int disconnect(const ::std::string&, const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_disconnect(const ::std::string&, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
     
@@ -566,7 +798,11 @@ public:
 
     virtual ::Ice::Int comprarMinutos(::Ice::Int, ::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
 
-    virtual ::Ice::Int avisarConsumo(::Ice::Int, ::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
+    virtual ::Ice::Int avisarConsumo(::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
+
+    virtual ::Ice::Int connect(const ::std::string&, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
+
+    virtual ::Ice::Int disconnect(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
 };
 
 }
@@ -588,7 +824,11 @@ public:
 
     virtual ::Ice::Int comprarMinutos(::Ice::Int, ::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
-    virtual ::Ice::Int avisarConsumo(::Ice::Int, ::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+    virtual ::Ice::Int avisarConsumo(::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
+    virtual ::Ice::Int connect(const ::std::string&, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
+    virtual ::Ice::Int disconnect(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 };
 
 }
@@ -610,7 +850,11 @@ public:
 
     virtual ::Ice::Int comprarMinutos(::Ice::Int, ::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 
-    virtual ::Ice::Int avisarConsumo(::Ice::Int, ::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+    virtual ::Ice::Int avisarConsumo(::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
+    virtual ::Ice::Int connect(const ::std::string&, const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
+    virtual ::Ice::Int disconnect(const ::std::string&, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 };
 
 }
@@ -638,8 +882,14 @@ public:
     virtual ::Ice::Int comprarMinutos(::Ice::Int, ::Ice::Int, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___comprarMinutos(::IceInternal::Incoming&, const ::Ice::Current&);
 
-    virtual ::Ice::Int avisarConsumo(::Ice::Int, ::Ice::Int, const ::Ice::Current& = ::Ice::Current()) = 0;
+    virtual ::Ice::Int avisarConsumo(::Ice::Int, ::Ice::Int, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___avisarConsumo(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual ::Ice::Int connect(const ::std::string&, const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___connect(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual ::Ice::Int disconnect(const ::std::string&, const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___disconnect(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
 
@@ -965,6 +1215,206 @@ template<class T, typename CT> Callback_UserManager_avisarConsumoPtr
 newCallback_UserManager_avisarConsumo(T* instance, void (T::*cb)(::Ice::Int, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_UserManager_avisarConsumo<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_UserManager_connect : public Callback_UserManager_connect_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(::Ice::Int);
+
+    CallbackNC_UserManager_connect(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::CallSystem::UserManagerPrx __proxy = ::CallSystem::UserManagerPrx::uncheckedCast(__result->getProxy());
+        ::Ice::Int __ret;
+        try
+        {
+            __ret = __proxy->end_connect(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::__exception(__result, ex);
+            return;
+        }
+        if(response)
+        {
+            (::IceInternal::CallbackNC<T>::callback.get()->*response)(__ret);
+        }
+    }
+
+    Response response;
+};
+
+template<class T> Callback_UserManager_connectPtr
+newCallback_UserManager_connect(const IceUtil::Handle<T>& instance, void (T::*cb)(::Ice::Int), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_UserManager_connect<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_UserManager_connectPtr
+newCallback_UserManager_connect(T* instance, void (T::*cb)(::Ice::Int), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_UserManager_connect<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_UserManager_connect : public Callback_UserManager_connect_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(::Ice::Int, const CT&);
+
+    Callback_UserManager_connect(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::CallSystem::UserManagerPrx __proxy = ::CallSystem::UserManagerPrx::uncheckedCast(__result->getProxy());
+        ::Ice::Int __ret;
+        try
+        {
+            __ret = __proxy->end_connect(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::__exception(__result, ex);
+            return;
+        }
+        if(response)
+        {
+            (::IceInternal::Callback<T, CT>::callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    Response response;
+};
+
+template<class T, typename CT> Callback_UserManager_connectPtr
+newCallback_UserManager_connect(const IceUtil::Handle<T>& instance, void (T::*cb)(::Ice::Int, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_UserManager_connect<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_UserManager_connectPtr
+newCallback_UserManager_connect(T* instance, void (T::*cb)(::Ice::Int, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_UserManager_connect<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_UserManager_disconnect : public Callback_UserManager_disconnect_Base, public ::IceInternal::TwowayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)(::Ice::Int);
+
+    CallbackNC_UserManager_disconnect(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallbackNC<T>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::CallSystem::UserManagerPrx __proxy = ::CallSystem::UserManagerPrx::uncheckedCast(__result->getProxy());
+        ::Ice::Int __ret;
+        try
+        {
+            __ret = __proxy->end_disconnect(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+            ::IceInternal::CallbackNC<T>::__exception(__result, ex);
+            return;
+        }
+        if(response)
+        {
+            (::IceInternal::CallbackNC<T>::callback.get()->*response)(__ret);
+        }
+    }
+
+    Response response;
+};
+
+template<class T> Callback_UserManager_disconnectPtr
+newCallback_UserManager_disconnect(const IceUtil::Handle<T>& instance, void (T::*cb)(::Ice::Int), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_UserManager_disconnect<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_UserManager_disconnectPtr
+newCallback_UserManager_disconnect(T* instance, void (T::*cb)(::Ice::Int), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_UserManager_disconnect<T>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_UserManager_disconnect : public Callback_UserManager_disconnect_Base, public ::IceInternal::TwowayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(::Ice::Int, const CT&);
+
+    Callback_UserManager_disconnect(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::TwowayCallback<T, CT>(obj, cb != 0, excb, sentcb), response(cb)
+    {
+    }
+
+    virtual void __completed(const ::Ice::AsyncResultPtr& __result) const
+    {
+        ::CallSystem::UserManagerPrx __proxy = ::CallSystem::UserManagerPrx::uncheckedCast(__result->getProxy());
+        ::Ice::Int __ret;
+        try
+        {
+            __ret = __proxy->end_disconnect(__result);
+        }
+        catch(::Ice::Exception& ex)
+        {
+            ::IceInternal::Callback<T, CT>::__exception(__result, ex);
+            return;
+        }
+        if(response)
+        {
+            (::IceInternal::Callback<T, CT>::callback.get()->*response)(__ret, CT::dynamicCast(__result->getCookie()));
+        }
+    }
+
+    Response response;
+};
+
+template<class T, typename CT> Callback_UserManager_disconnectPtr
+newCallback_UserManager_disconnect(const IceUtil::Handle<T>& instance, void (T::*cb)(::Ice::Int, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_UserManager_disconnect<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_UserManager_disconnectPtr
+newCallback_UserManager_disconnect(T* instance, void (T::*cb)(::Ice::Int, const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_UserManager_disconnect<T, CT>(instance, cb, excb, sentcb);
 }
 
 }

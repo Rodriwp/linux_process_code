@@ -4,7 +4,7 @@ all: server
 
 server: $(SRC)
 	gcc -I. -c $(SRC)
-	gcc -o server server.o UserManager.o AlertSystem.o -lIce -lIceUtil -pthread -lstdc++
+	gcc -g -o server server.o UserManager.o AlertSystem.o -lIce -lIceUtil -pthread -lstdc++
 
 .PHONY: clean
 

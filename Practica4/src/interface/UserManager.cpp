@@ -46,6 +46,10 @@ const ::std::string __CallSystem__UserManager__comprarMinutos_name = "comprarMin
 
 const ::std::string __CallSystem__UserManager__avisarConsumo_name = "avisarConsumo";
 
+const ::std::string __CallSystem__UserManager__connect_name = "connect";
+
+const ::std::string __CallSystem__UserManager__disconnect_name = "disconnect";
+
 }
 ::IceProxy::Ice::Object* ::IceProxy::CallSystem::upCast(::IceProxy::CallSystem::UserManager* p) { return p; }
 
@@ -221,7 +225,7 @@ IceProxy::CallSystem::UserManager::end_comprarMinutos(const ::Ice::AsyncResultPt
 }
 
 ::Ice::Int
-IceProxy::CallSystem::UserManager::avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::Ice::Context* __ctx)
+IceProxy::CallSystem::UserManager::avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::std::string& myip, const ::Ice::Context* __ctx)
 {
     ::IceInternal::InvocationObserver __observer(this, __CallSystem__UserManager__avisarConsumo_name, __ctx);
     int __cnt = 0;
@@ -233,7 +237,7 @@ IceProxy::CallSystem::UserManager::avisarConsumo(::Ice::Int dni, ::Ice::Int minu
             __checkTwowayOnly(__CallSystem__UserManager__avisarConsumo_name);
             __delBase = __getDelegate(false);
             ::IceDelegate::CallSystem::UserManager* __del = dynamic_cast< ::IceDelegate::CallSystem::UserManager*>(__delBase.get());
-            return __del->avisarConsumo(dni, minutesAlertThreshold, __ctx, __observer);
+            return __del->avisarConsumo(dni, minutesAlertThreshold, myip, __ctx, __observer);
         }
         catch(const ::IceInternal::LocalExceptionWrapper& __ex)
         {
@@ -247,7 +251,7 @@ IceProxy::CallSystem::UserManager::avisarConsumo(::Ice::Int dni, ::Ice::Int minu
 }
 
 ::Ice::AsyncResultPtr
-IceProxy::CallSystem::UserManager::begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+IceProxy::CallSystem::UserManager::begin_avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::std::string& myip, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
 {
     __checkAsyncTwowayOnly(__CallSystem__UserManager__avisarConsumo_name);
     ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __CallSystem__UserManager__avisarConsumo_name, __del, __cookie);
@@ -257,6 +261,7 @@ IceProxy::CallSystem::UserManager::begin_avisarConsumo(::Ice::Int dni, ::Ice::In
         ::IceInternal::BasicStream* __os = __result->__startWriteParams(::Ice::DefaultFormat);
         __os->write(dni);
         __os->write(minutesAlertThreshold);
+        __os->write(myip);
         __result->__endWriteParams();
         __result->__send(true);
     }
@@ -271,6 +276,161 @@ IceProxy::CallSystem::UserManager::begin_avisarConsumo(::Ice::Int dni, ::Ice::In
 IceProxy::CallSystem::UserManager::end_avisarConsumo(const ::Ice::AsyncResultPtr& __result)
 {
     ::Ice::AsyncResult::__check(__result, this, __CallSystem__UserManager__avisarConsumo_name);
+    ::Ice::Int __ret;
+    bool __ok = __result->__wait();
+    try
+    {
+        if(!__ok)
+        {
+            try
+            {
+                __result->__throwUserException();
+            }
+            catch(const ::Ice::UserException& __ex)
+            {
+                throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+            }
+        }
+        ::IceInternal::BasicStream* __is = __result->__startReadParams();
+        __is->read(__ret);
+        __result->__endReadParams();
+        return __ret;
+    }
+    catch(const ::Ice::LocalException& ex)
+    {
+        __result->__getObserver().failed(ex.ice_name());
+        throw;
+    }
+}
+
+::Ice::Int
+IceProxy::CallSystem::UserManager::connect(const ::std::string& myip, const ::std::string& port, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::InvocationObserver __observer(this, __CallSystem__UserManager__connect_name, __ctx);
+    int __cnt = 0;
+    while(true)
+    {
+        ::IceInternal::Handle< ::IceDelegate::Ice::Object> __delBase;
+        try
+        {
+            __checkTwowayOnly(__CallSystem__UserManager__connect_name);
+            __delBase = __getDelegate(false);
+            ::IceDelegate::CallSystem::UserManager* __del = dynamic_cast< ::IceDelegate::CallSystem::UserManager*>(__delBase.get());
+            return __del->connect(myip, port, __ctx, __observer);
+        }
+        catch(const ::IceInternal::LocalExceptionWrapper& __ex)
+        {
+            __handleExceptionWrapper(__delBase, __ex, __observer);
+        }
+        catch(const ::Ice::LocalException& __ex)
+        {
+            __handleException(__delBase, __ex, true, __cnt, __observer);
+        }
+    }
+}
+
+::Ice::AsyncResultPtr
+IceProxy::CallSystem::UserManager::begin_connect(const ::std::string& myip, const ::std::string& port, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__CallSystem__UserManager__connect_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __CallSystem__UserManager__connect_name, __del, __cookie);
+    try
+    {
+        __result->__prepare(__CallSystem__UserManager__connect_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->__startWriteParams(::Ice::DefaultFormat);
+        __os->write(myip);
+        __os->write(port);
+        __result->__endWriteParams();
+        __result->__send(true);
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __result->__exceptionAsync(__ex);
+    }
+    return __result;
+}
+
+::Ice::Int
+IceProxy::CallSystem::UserManager::end_connect(const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __CallSystem__UserManager__connect_name);
+    ::Ice::Int __ret;
+    bool __ok = __result->__wait();
+    try
+    {
+        if(!__ok)
+        {
+            try
+            {
+                __result->__throwUserException();
+            }
+            catch(const ::Ice::UserException& __ex)
+            {
+                throw ::Ice::UnknownUserException(__FILE__, __LINE__, __ex.ice_name());
+            }
+        }
+        ::IceInternal::BasicStream* __is = __result->__startReadParams();
+        __is->read(__ret);
+        __result->__endReadParams();
+        return __ret;
+    }
+    catch(const ::Ice::LocalException& ex)
+    {
+        __result->__getObserver().failed(ex.ice_name());
+        throw;
+    }
+}
+
+::Ice::Int
+IceProxy::CallSystem::UserManager::disconnect(const ::std::string& myip, const ::Ice::Context* __ctx)
+{
+    ::IceInternal::InvocationObserver __observer(this, __CallSystem__UserManager__disconnect_name, __ctx);
+    int __cnt = 0;
+    while(true)
+    {
+        ::IceInternal::Handle< ::IceDelegate::Ice::Object> __delBase;
+        try
+        {
+            __checkTwowayOnly(__CallSystem__UserManager__disconnect_name);
+            __delBase = __getDelegate(false);
+            ::IceDelegate::CallSystem::UserManager* __del = dynamic_cast< ::IceDelegate::CallSystem::UserManager*>(__delBase.get());
+            return __del->disconnect(myip, __ctx, __observer);
+        }
+        catch(const ::IceInternal::LocalExceptionWrapper& __ex)
+        {
+            __handleExceptionWrapper(__delBase, __ex, __observer);
+        }
+        catch(const ::Ice::LocalException& __ex)
+        {
+            __handleException(__delBase, __ex, true, __cnt, __observer);
+        }
+    }
+}
+
+::Ice::AsyncResultPtr
+IceProxy::CallSystem::UserManager::begin_disconnect(const ::std::string& myip, const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    __checkAsyncTwowayOnly(__CallSystem__UserManager__disconnect_name);
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __CallSystem__UserManager__disconnect_name, __del, __cookie);
+    try
+    {
+        __result->__prepare(__CallSystem__UserManager__disconnect_name, ::Ice::Normal, __ctx);
+        ::IceInternal::BasicStream* __os = __result->__startWriteParams(::Ice::DefaultFormat);
+        __os->write(myip);
+        __result->__endWriteParams();
+        __result->__send(true);
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __result->__exceptionAsync(__ex);
+    }
+    return __result;
+}
+
+::Ice::Int
+IceProxy::CallSystem::UserManager::end_disconnect(const ::Ice::AsyncResultPtr& __result)
+{
+    ::Ice::AsyncResult::__check(__result, this, __CallSystem__UserManager__disconnect_name);
     ::Ice::Int __ret;
     bool __ok = __result->__wait();
     try
@@ -406,7 +566,7 @@ IceDelegateM::CallSystem::UserManager::comprarMinutos(::Ice::Int dni, ::Ice::Int
 }
 
 ::Ice::Int
-IceDelegateM::CallSystem::UserManager::avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::Ice::Context* __context, ::IceInternal::InvocationObserver& __observer)
+IceDelegateM::CallSystem::UserManager::avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::std::string& myip, const ::Ice::Context* __context, ::IceInternal::InvocationObserver& __observer)
 {
     ::IceInternal::Outgoing __og(__handler.get(), __CallSystem__UserManager__avisarConsumo_name, ::Ice::Normal, __context, __observer);
     try
@@ -414,6 +574,90 @@ IceDelegateM::CallSystem::UserManager::avisarConsumo(::Ice::Int dni, ::Ice::Int 
         ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
         __os->write(dni);
         __os->write(minutesAlertThreshold);
+        __os->write(myip);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    bool __ok = __og.invoke();
+    ::Ice::Int __ret;
+    try
+    {
+        if(!__ok)
+        {
+            try
+            {
+                __og.throwUserException();
+            }
+            catch(const ::Ice::UserException& __ex)
+            {
+                ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+                throw __uue;
+            }
+        }
+        ::IceInternal::BasicStream* __is = __og.startReadParams();
+        __is->read(__ret);
+        __og.endReadParams();
+        return __ret;
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        throw ::IceInternal::LocalExceptionWrapper(__ex, false);
+    }
+}
+
+::Ice::Int
+IceDelegateM::CallSystem::UserManager::connect(const ::std::string& myip, const ::std::string& port, const ::Ice::Context* __context, ::IceInternal::InvocationObserver& __observer)
+{
+    ::IceInternal::Outgoing __og(__handler.get(), __CallSystem__UserManager__connect_name, ::Ice::Normal, __context, __observer);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(myip);
+        __os->write(port);
+        __og.endWriteParams();
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __og.abort(__ex);
+    }
+    bool __ok = __og.invoke();
+    ::Ice::Int __ret;
+    try
+    {
+        if(!__ok)
+        {
+            try
+            {
+                __og.throwUserException();
+            }
+            catch(const ::Ice::UserException& __ex)
+            {
+                ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+                throw __uue;
+            }
+        }
+        ::IceInternal::BasicStream* __is = __og.startReadParams();
+        __is->read(__ret);
+        __og.endReadParams();
+        return __ret;
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        throw ::IceInternal::LocalExceptionWrapper(__ex, false);
+    }
+}
+
+::Ice::Int
+IceDelegateM::CallSystem::UserManager::disconnect(const ::std::string& myip, const ::Ice::Context* __context, ::IceInternal::InvocationObserver& __observer)
+{
+    ::IceInternal::Outgoing __og(__handler.get(), __CallSystem__UserManager__disconnect_name, ::Ice::Normal, __context, __observer);
+    try
+    {
+        ::IceInternal::BasicStream* __os = __og.startWriteParams(::Ice::DefaultFormat);
+        __os->write(myip);
         __og.endWriteParams();
     }
     catch(const ::Ice::LocalException& __ex)
@@ -586,17 +830,18 @@ IceDelegateD::CallSystem::UserManager::comprarMinutos(::Ice::Int dni, ::Ice::Int
 }
 
 ::Ice::Int
-IceDelegateD::CallSystem::UserManager::avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::Ice::Context* __context, ::IceInternal::InvocationObserver&)
+IceDelegateD::CallSystem::UserManager::avisarConsumo(::Ice::Int dni, ::Ice::Int minutesAlertThreshold, const ::std::string& myip, const ::Ice::Context* __context, ::IceInternal::InvocationObserver&)
 {
     class _DirectI : public ::IceInternal::Direct
     {
     public:
 
-        _DirectI(::Ice::Int& __result, ::Ice::Int __p_dni, ::Ice::Int __p_minutesAlertThreshold, const ::Ice::Current& __current) : 
+        _DirectI(::Ice::Int& __result, ::Ice::Int __p_dni, ::Ice::Int __p_minutesAlertThreshold, const ::std::string& __p_myip, const ::Ice::Current& __current) : 
             ::IceInternal::Direct(__current),
             _result(__result),
             _m_dni(__p_dni),
-            _m_minutesAlertThreshold(__p_minutesAlertThreshold)
+            _m_minutesAlertThreshold(__p_minutesAlertThreshold),
+            _m_myip(__p_myip)
         {
         }
         
@@ -608,7 +853,7 @@ IceDelegateD::CallSystem::UserManager::avisarConsumo(::Ice::Int dni, ::Ice::Int 
             {
                 throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
             }
-            _result = servant->avisarConsumo(_m_dni, _m_minutesAlertThreshold, _current);
+            _result = servant->avisarConsumo(_m_dni, _m_minutesAlertThreshold, _m_myip, _current);
             return ::Ice::DispatchOK;
         }
         
@@ -617,6 +862,7 @@ IceDelegateD::CallSystem::UserManager::avisarConsumo(::Ice::Int dni, ::Ice::Int 
         ::Ice::Int& _result;
         ::Ice::Int _m_dni;
         ::Ice::Int _m_minutesAlertThreshold;
+        const ::std::string& _m_myip;
     };
     
     ::Ice::Current __current;
@@ -624,7 +870,145 @@ IceDelegateD::CallSystem::UserManager::avisarConsumo(::Ice::Int dni, ::Ice::Int 
     ::Ice::Int __result;
     try
     {
-        _DirectI __direct(__result, dni, minutesAlertThreshold, __current);
+        _DirectI __direct(__result, dni, minutesAlertThreshold, myip, __current);
+        try
+        {
+            __direct.getServant()->__collocDispatch(__direct);
+        }
+        catch(...)
+        {
+            __direct.destroy();
+            throw;
+        }
+        __direct.destroy();
+    }
+    catch(const ::Ice::SystemException&)
+    {
+        throw;
+    }
+    catch(const ::IceInternal::LocalExceptionWrapper&)
+    {
+        throw;
+    }
+    catch(const ::std::exception& __ex)
+    {
+        ::IceInternal::LocalExceptionWrapper::throwWrapper(__ex);
+    }
+    catch(...)
+    {
+        throw ::IceInternal::LocalExceptionWrapper(::Ice::UnknownException(__FILE__, __LINE__, "unknown c++ exception"), false);
+    }
+    return __result;
+}
+
+::Ice::Int
+IceDelegateD::CallSystem::UserManager::connect(const ::std::string& myip, const ::std::string& port, const ::Ice::Context* __context, ::IceInternal::InvocationObserver&)
+{
+    class _DirectI : public ::IceInternal::Direct
+    {
+    public:
+
+        _DirectI(::Ice::Int& __result, const ::std::string& __p_myip, const ::std::string& __p_port, const ::Ice::Current& __current) : 
+            ::IceInternal::Direct(__current),
+            _result(__result),
+            _m_myip(__p_myip),
+            _m_port(__p_port)
+        {
+        }
+        
+        virtual ::Ice::DispatchStatus
+        run(::Ice::Object* object)
+        {
+            ::CallSystem::UserManager* servant = dynamic_cast< ::CallSystem::UserManager*>(object);
+            if(!servant)
+            {
+                throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
+            }
+            _result = servant->connect(_m_myip, _m_port, _current);
+            return ::Ice::DispatchOK;
+        }
+        
+    private:
+        
+        ::Ice::Int& _result;
+        const ::std::string& _m_myip;
+        const ::std::string& _m_port;
+    };
+    
+    ::Ice::Current __current;
+    __initCurrent(__current, __CallSystem__UserManager__connect_name, ::Ice::Normal, __context);
+    ::Ice::Int __result;
+    try
+    {
+        _DirectI __direct(__result, myip, port, __current);
+        try
+        {
+            __direct.getServant()->__collocDispatch(__direct);
+        }
+        catch(...)
+        {
+            __direct.destroy();
+            throw;
+        }
+        __direct.destroy();
+    }
+    catch(const ::Ice::SystemException&)
+    {
+        throw;
+    }
+    catch(const ::IceInternal::LocalExceptionWrapper&)
+    {
+        throw;
+    }
+    catch(const ::std::exception& __ex)
+    {
+        ::IceInternal::LocalExceptionWrapper::throwWrapper(__ex);
+    }
+    catch(...)
+    {
+        throw ::IceInternal::LocalExceptionWrapper(::Ice::UnknownException(__FILE__, __LINE__, "unknown c++ exception"), false);
+    }
+    return __result;
+}
+
+::Ice::Int
+IceDelegateD::CallSystem::UserManager::disconnect(const ::std::string& myip, const ::Ice::Context* __context, ::IceInternal::InvocationObserver&)
+{
+    class _DirectI : public ::IceInternal::Direct
+    {
+    public:
+
+        _DirectI(::Ice::Int& __result, const ::std::string& __p_myip, const ::Ice::Current& __current) : 
+            ::IceInternal::Direct(__current),
+            _result(__result),
+            _m_myip(__p_myip)
+        {
+        }
+        
+        virtual ::Ice::DispatchStatus
+        run(::Ice::Object* object)
+        {
+            ::CallSystem::UserManager* servant = dynamic_cast< ::CallSystem::UserManager*>(object);
+            if(!servant)
+            {
+                throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
+            }
+            _result = servant->disconnect(_m_myip, _current);
+            return ::Ice::DispatchOK;
+        }
+        
+    private:
+        
+        ::Ice::Int& _result;
+        const ::std::string& _m_myip;
+    };
+    
+    ::Ice::Current __current;
+    __initCurrent(__current, __CallSystem__UserManager__disconnect_name, ::Ice::Normal, __context);
+    ::Ice::Int __result;
+    try
+    {
+        _DirectI __direct(__result, myip, __current);
         try
         {
             __direct.getServant()->__collocDispatch(__direct);
@@ -730,10 +1114,44 @@ CallSystem::UserManager::___avisarConsumo(::IceInternal::Incoming& __inS, const 
     ::IceInternal::BasicStream* __is = __inS.startReadParams();
     ::Ice::Int dni;
     ::Ice::Int minutesAlertThreshold;
+    ::std::string myip;
     __is->read(dni);
     __is->read(minutesAlertThreshold);
+    __is->read(myip);
     __inS.endReadParams();
-    ::Ice::Int __ret = avisarConsumo(dni, minutesAlertThreshold, __current);
+    ::Ice::Int __ret = avisarConsumo(dni, minutesAlertThreshold, myip, __current);
+    ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
+    __os->write(__ret);
+    __inS.__endWriteParams(true);
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+CallSystem::UserManager::___connect(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::std::string myip;
+    ::std::string port;
+    __is->read(myip);
+    __is->read(port);
+    __inS.endReadParams();
+    ::Ice::Int __ret = connect(myip, port, __current);
+    ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
+    __os->write(__ret);
+    __inS.__endWriteParams(true);
+    return ::Ice::DispatchOK;
+}
+
+::Ice::DispatchStatus
+CallSystem::UserManager::___disconnect(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    ::IceInternal::BasicStream* __is = __inS.startReadParams();
+    ::std::string myip;
+    __is->read(myip);
+    __inS.endReadParams();
+    ::Ice::Int __ret = disconnect(myip, __current);
     ::IceInternal::BasicStream* __os = __inS.__startWriteParams(::Ice::DefaultFormat);
     __os->write(__ret);
     __inS.__endWriteParams(true);
@@ -746,7 +1164,9 @@ const ::std::string __CallSystem__UserManager_all[] =
 {
     "avisarConsumo",
     "comprarMinutos",
+    "connect",
     "darAlta",
+    "disconnect",
     "ice_id",
     "ice_ids",
     "ice_isA",
@@ -758,7 +1178,7 @@ const ::std::string __CallSystem__UserManager_all[] =
 ::Ice::DispatchStatus
 CallSystem::UserManager::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__CallSystem__UserManager_all, __CallSystem__UserManager_all + 7, current.operation);
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__CallSystem__UserManager_all, __CallSystem__UserManager_all + 9, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -776,21 +1196,29 @@ CallSystem::UserManager::__dispatch(::IceInternal::Incoming& in, const ::Ice::Cu
         }
         case 2:
         {
-            return ___darAlta(in, current);
+            return ___connect(in, current);
         }
         case 3:
         {
-            return ___ice_id(in, current);
+            return ___darAlta(in, current);
         }
         case 4:
         {
-            return ___ice_ids(in, current);
+            return ___disconnect(in, current);
         }
         case 5:
         {
-            return ___ice_isA(in, current);
+            return ___ice_id(in, current);
         }
         case 6:
+        {
+            return ___ice_ids(in, current);
+        }
+        case 7:
+        {
+            return ___ice_isA(in, current);
+        }
+        case 8:
         {
             return ___ice_ping(in, current);
         }

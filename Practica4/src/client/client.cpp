@@ -4,20 +4,43 @@
 
 using namespace std;
 using namespace CallSystem;
+class Main{
+private:
+    static const int SHUTDOWN;
+    static int status;
 
-const int SHUTDOWN = 4;
+    //Server parameters
+    static const string LOCALHOST;
+    static const string IP_ADDR_SERVER;
+    static const string PORT_SERVER;
+    //Server on client parameters
+    static const string PORT_CLIENT;
+    static string myip;
+
+    virtual void * client_func(void *);
+    virtual void * server_func(void *);
+};
+
 int status = 0;
 Ice::CommunicatorPtr ic;
+const int SHUTDOWN = 4;
+const string LOCALHOST = "localhost";
+//Server parameters
+const string IP_ADDR_SERVER = LOCALHOST;
+const string PORT_SERVER = "10000";
+//Server on client parameters
+const string PORT_CLIENT = "10001";
+string myip = LOCALHOST;
 
 //ICE client
 void * client_func(void *){
   try {
-
-      Ice::ObjectPrx base = ic->stringToProxy("UserManager:default -h localhost -p 10000");
+      Ice::ObjectPrx base = ic->stringToProxy("UserManager:default -h "+IP_ADDR_SERVER+" -p "+PORT_SERVER);
       UserManagerPrx remoteService = UserManagerPrx::checkedCast(base);
       if (!remoteService)
           throw "Invalid proxy";
-      // your client code here!
+      //Client code.
+      while(remoteService->connect(myip,PORT_CLIENT)!=0);
       int option = 0;
       int dni = 0;
       int minutos = 0;
@@ -50,7 +73,7 @@ void * client_func(void *){
                 cin >> dni;
                 cout << "Aviso de Limite de Minutos : ";
                 cin >> minutos;
-                if(remoteService->avisarConsumo(dni,minutos)==1){
+                if(remoteService->avisarConsumo(dni,minutos,myip)==1){
                     std::cout << "El DNI: "<<dni<<"  no esta en el sistema"<<endl;
                   }
             break;
@@ -58,6 +81,11 @@ void * client_func(void *){
             break;
           }
       }while(option != SHUTDOWN);
+      while(remoteService->disconnect(myip)!=0);
+  } catch (const Ice::ConnectionRefusedException& ex) {
+        cout << "CallSystem no esta disponible en estos momentos, porfavor intentelo mas tarde." << endl;
+        cout << "Si el problema persiste contacte con el servicio de atencion al cliente"<<endl;
+        status = 1;
   } catch (const Ice::Exception& ex) {
       cerr << ex << endl;
       status = 1;
@@ -69,11 +97,12 @@ void * client_func(void *){
       ic->destroy();
   pthread_exit(NULL);
 }
+
 //ICE server for alarmsystem
 void * server_func(void *){
   try {
       Ice::ObjectAdapterPtr adapter =
-      ic->createObjectAdapterWithEndpoints("asii_adapter","default -p 10001");
+      ic->createObjectAdapterWithEndpoints("asii_adapter","default -p "+PORT_CLIENT);
       Ice::ObjectPtr object = new AlertSystemI;
       adapter->add(object, ic->stringToIdentity("AlertSystem"));
       adapter->activate();
@@ -85,7 +114,7 @@ void * server_func(void *){
       cerr << msg << endl;
       status = 1;
   }
-  if (ic) {
+  if (ic){
       try {
           ic->destroy();
       } catch (const Ice::Exception& e) {
@@ -100,8 +129,14 @@ CallSystem::AlertSystemI::consumAlert(::Ice::Int dni,
                                       ::Ice::Int minutesAlertThreshold,
                                       const Ice::Current& current)
 {
-  cout << dni <<endl;
+  if(dni == 0){
+    cout << "Estas correctamente subscrito al sistema de avisos"<<endl;
+  }else{
+    cout << "Aviso al cliente " << dni << ": tiempo de consumo es menor a "
+         <<minutesAlertThreshold<<endl;
+  }
 }
+//MAIN
 int main(int argc, char* argv[])
 {
   int ret;
@@ -109,7 +144,6 @@ int main(int argc, char* argv[])
 
   pthread_t client_pth;
   pthread_t server_pth;
-
   ret = pthread_create(&server_pth, NULL, &server_func, NULL);
   if(ret != 0) {
                 printf("Error: pthread_create() failed\n");
@@ -123,6 +157,5 @@ int main(int argc, char* argv[])
 
   pthread_join(client_pth, NULL);
   pthread_join(server_pth, NULL);
-  //TODO: informar al servidor de la terminación
   exit(status);
 }
