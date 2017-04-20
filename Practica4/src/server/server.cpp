@@ -6,8 +6,6 @@
 using namespace std;
 using namespace CallSystem;
 
-static const int MAX_NUM_CLIENT = 255;
-
 typedef struct machine_client{
      unsigned long id_machine;
      string ip;
@@ -221,6 +219,7 @@ CallSystem::UserManagerI::connect(const ::std::string& myip,
     if(!myip.compare("localhost")){
         inet_pton(AF_INET,myip.c_str(),&id);
     }
+    cout << "New Client Incoming with IP: "<<id<<endl;
     pthread_mutex_lock( &_mutex_machines );
     for(int i = 0;i < maquinas_avisos_cl.size();i++){
         if(maquinas_avisos_cl.at(i).id_machine == id){

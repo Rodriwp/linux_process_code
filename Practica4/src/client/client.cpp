@@ -104,7 +104,7 @@ void * server_func(void *){
       Ice::ObjectAdapterPtr adapter =
       ic->createObjectAdapterWithEndpoints("asii_adapter","default -p "+PORT_CLIENT);
       Ice::ObjectPtr object = new AlertSystemI;
-      adapter->add(object, ic->stringToIdentity("AlertSystem"));
+      adapter->add(object, ic->stringToIdentity("AlertSystem"+myip));
       adapter->activate();
       ic->waitForShutdown();
   } catch (const Ice::Exception& e) {
