@@ -216,11 +216,11 @@ CallSystem::UserManagerI::connect(const ::std::string& myip,
                                   const Ice::Current& current)
 {
     unsigned long id = 0;
-    if(!myip.compare("localhost")){
-        inet_pton(AF_INET,myip.c_str(),&id);
-    }
-    cout << "New Client Incoming with IP: "<<id<<endl;
     pthread_mutex_lock( &_mutex_machines );
+    if(!myip.compare("localhost")){
+        id = maquinas_avisos_cl.back().id_machine+1;
+    }
+    cout << "New Client Incoming with ID: "<<id<<endl;
     for(int i = 0;i < maquinas_avisos_cl.size();i++){
         if(maquinas_avisos_cl.at(i).id_machine == id){
           pthread_mutex_unlock( &_mutex_machines );
