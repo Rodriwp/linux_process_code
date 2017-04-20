@@ -31,6 +31,8 @@ const string PORT_SERVER = "10000";
 //Server on client parameters
 const string PORT_CLIENT = "10001";
 string myip = LOCALHOST;
+pthread_t client_pth;
+pthread_t server_pth;
 
 //ICE client
 void * client_func(void *){
@@ -148,9 +150,6 @@ int main(int argc, char* argv[])
 {
   int ret;
   ic = Ice::initialize(argc, argv);
-
-  pthread_t client_pth;
-  pthread_t server_pth;
   ret = pthread_create(&server_pth, NULL, &server_func, NULL);
   if(ret != 0) {
                 printf("Error: pthread_create() failed\n");
