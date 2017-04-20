@@ -82,7 +82,7 @@ void * monitora_func(void *){
                 datos_cl.erase(datos_cl.begin()+i);
             }else if(datos_cl.at(i).minutos <= datos_cl.at(i).lim && datos_cl.at(i).aviso_flag == 1){
                 datos_cl.at(i).aviso_flag = 0;
-                cout<<"tengo que avisar"<< endl;
+
                 pthread_mutex_lock(&_mutex_avisos);
                 avisos_cl.push_back(datos_cl.at(i).dni);
                 pthread_mutex_unlock( &_mutex_avisos);
@@ -118,6 +118,7 @@ void * avisadora_func(void * indata){
                     pthread_mutex_unlock( &_mutex);
                     break;
                 }
+                cout<<"estoy aqui"<<endl;
                 if(datos_hebra.id_machine==datos_cl.at(pos).id_machine){
                     remoteService->consumAlert(datos_cl.at(pos).dni,datos_cl.at(pos).lim);
                     avisos_cl.erase(avisos_cl.begin());
