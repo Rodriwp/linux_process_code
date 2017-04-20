@@ -99,6 +99,7 @@ void * monitora_func(void *){
 }
 //Hebra avisadora
 void * avisadora_func(void * indata){
+    bool flag = 1;
     machine_client_t datos_hebra = *((machine_client_t*)indata);
     try {
         AlertSystemPrx remoteService;
@@ -109,7 +110,8 @@ void * avisadora_func(void * indata){
         remoteService->consumAlert(0,0);
         while(1){
             pthread_mutex_lock( &_mutex_avisos);
-            while(avisos_cl.size() != 0){
+            while(avisos_cl.size() != 0 && flag == 1){
+                flag = 0;
                 pthread_mutex_lock( &_mutex );
                 int pos = searchClient(avisos_cl.at(0));
                 if(pos == -1){
@@ -118,14 +120,13 @@ void * avisadora_func(void * indata){
                     pthread_mutex_unlock( &_mutex);
                     break;
                 }
-                cout<<"estoy aqui"<<datos_hebra.id_machine<<endl;
                 if(datos_hebra.id_machine==datos_cl.at(pos).id_machine){
                     remoteService->consumAlert(datos_cl.at(pos).dni,datos_cl.at(pos).lim);
                     avisos_cl.erase(avisos_cl.begin());
                 }
-                pthread_mutex_unlock( &_mutex);
             }
             pthread_mutex_unlock( &_mutex_avisos);
+            flag = 1;
         }
     } catch (const Ice::Exception& ex) {
         cerr << ex << endl;
