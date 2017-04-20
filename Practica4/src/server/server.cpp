@@ -117,6 +117,7 @@ void * avisadora_func(void * indata){
                     avisos_cl.erase(avisos_cl.begin());
                     break;
                 }
+                cout<< "todo ok"<<datos_hebra.id_machine<<endl;
                 if(datos_hebra.id_machine==datos_cl.at(pos).id_machine){
                     remoteService->consumAlert(datos_cl.at(pos).dni,datos_cl.at(pos).lim);
                     avisos_cl.erase(avisos_cl.begin());
@@ -153,7 +154,7 @@ CallSystem::UserManagerI::darAlta(::Ice::Int dni,
       tmp.minutos = 10;//10 minutos de regalo para todos los nuevos clientes
       tmp.lim = 0;
       tmp.aviso_flag = 0;
-      tmp.id_machine= -1;
+      tmp.id_machine=-1;
       datos_cl.push_back(tmp);
       pthread_mutex_unlock( &_mutex );
       if(datos_cl.size()>1&& monitora_status == 0){
