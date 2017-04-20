@@ -118,7 +118,7 @@ void * avisadora_func(void * indata){
                     pthread_mutex_unlock( &_mutex);
                     break;
                 }
-                cout<<"estoy aqui"<<endl;
+                cout<<"estoy aqui"<<datos_hebra.id_machine<<endl;
                 if(datos_hebra.id_machine==datos_cl.at(pos).id_machine){
                     remoteService->consumAlert(datos_cl.at(pos).dni,datos_cl.at(pos).lim);
                     avisos_cl.erase(avisos_cl.begin());
