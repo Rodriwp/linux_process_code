@@ -195,7 +195,7 @@ CallSystem::UserManagerI::avisarConsumo(::Ice::Int dni,
 {
   int pos;
   unsigned long id = 0;
-  if(!myip.compare("localhost")){
+  if(myip.compare("localhost")){
       inet_pton(AF_INET,myip.c_str(),&id);
   }
   pthread_mutex_lock( &_mutex );
@@ -248,7 +248,7 @@ CallSystem::UserManagerI::disconnect(const ::std::string& myip,
                                      const Ice::Current& current)
 {
     unsigned long id = 0;
-    if(!myip.compare("localhost")){
+    if(myip.compare("localhost")){
         inet_pton(AF_INET,myip.c_str(),&id);
     }
     pthread_mutex_lock(&_mutex_machines);
