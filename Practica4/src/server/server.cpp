@@ -104,7 +104,7 @@ void * avisadora_func(void * indata){
     try {
         AlertSystemPrx remoteService;
         do{
-            Ice::ObjectPrx base = ic->stringToProxy("AlertSystem:default -h "+datos_hebra.ip+" -p "+datos_hebra.port);
+            Ice::ObjectPrx base = ic->stringToProxy("AlertSystem"+datos_hebra.ip+":default -h "+datos_hebra.ip+" -p "+datos_hebra.port);
             remoteService = AlertSystemPrx::checkedCast(base);
         } while(!remoteService);
         remoteService->consumAlert(0,0);
