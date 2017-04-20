@@ -21,9 +21,9 @@ typedef struct client{
 }client_t;
 
 
-
-int consumo_status = 0;
-int monitora_status = 0;
+bool cerrar_servidor = 0;
+bool consumo_status = 0;
+bool monitora_status = 0;
 pthread_t consumo_pth;
 pthread_t monitora_pth;
 pthread_mutex_t _mutex;
@@ -125,6 +125,8 @@ void * avisadora_func(void * indata){
                 pthread_mutex_unlock( &_mutex );
             }
             pthread_mutex_unlock( &_mutex_avisos);
+            if(cerrar_servidor)
+                    remoteService->shutDown();
         }
     } catch (const Ice::Exception& ex) {
         cerr << ex << endl;
@@ -313,6 +315,8 @@ int main(int argc, char* argv[])
           }
       }while(option != SHUTDOWN);
       //Cerrar clientes
+      cerrar_servidor = 1;
+
       pthread_mutex_lock( &_mutex_machines);
       for(int i = 0;i < maquinas_avisos_cl.size();i++){
             pthread_cancel(maquinas_avisos_cl.at(i).pth);
@@ -347,6 +351,6 @@ int main(int argc, char* argv[])
           status = 1;
       }
   }
-
+  cout << "Servidor terminado!"<<endl;
   exit(status);
 }

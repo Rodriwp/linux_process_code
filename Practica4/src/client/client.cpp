@@ -136,6 +136,13 @@ CallSystem::AlertSystemI::consumAlert(::Ice::Int dni,
          <<minutesAlertThreshold<<endl;
   }
 }
+void
+CallSystem::AlertSystemI::shutDown(const Ice::Current& current)
+{
+    cout << "El servidor va a apagarse en ..."<<endl;
+    pthread_cancel(client_pth);
+    pthread_cancel(server_pth);
+}
 //MAIN
 int main(int argc, char* argv[])
 {
@@ -157,5 +164,6 @@ int main(int argc, char* argv[])
 
   pthread_join(client_pth, NULL);
   pthread_join(server_pth, NULL);
+  cout << "Cliente terminado!"<<endl;
   exit(status);
 }

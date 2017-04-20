@@ -13,6 +13,7 @@ public:
     virtual void consumAlert(::Ice::Int,
                              ::Ice::Int,
                              const Ice::Current&);
+    virtual void shutDown(const Ice::Current&);
 };
 
 }
