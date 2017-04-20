@@ -83,7 +83,7 @@ void * monitora_func(void *){
             }else if(datos_cl.at(i).minutos <= datos_cl.at(i).lim && datos_cl.at(i).aviso_flag == 1){
                 datos_cl.at(i).aviso_flag = 0;
                 cout<<"tengo que avisar"<< endl;
-                pthread_mutex_lock( &_mutex_avisos);
+                pthread_mutex_lock(&_mutex_avisos);
                 avisos_cl.push_back(datos_cl.at(i).dni);
                 pthread_mutex_unlock( &_mutex_avisos);
 
@@ -109,21 +109,21 @@ void * avisadora_func(void * indata){
         remoteService->consumAlert(0,0);
         while(1){
             pthread_mutex_lock( &_mutex_avisos);
-            pthread_mutex_lock( &_mutex );
             while(avisos_cl.size() != 0){
-
+                pthread_mutex_lock( &_mutex );
                 int pos = searchClient(avisos_cl.at(0));
                 if(pos == -1){
                     //Client not longer exits
                     avisos_cl.erase(avisos_cl.begin());
+                    pthread_mutex_unlock( &_mutex);
                     break;
                 }
                 if(datos_hebra.id_machine==datos_cl.at(pos).id_machine){
                     remoteService->consumAlert(datos_cl.at(pos).dni,datos_cl.at(pos).lim);
                     avisos_cl.erase(avisos_cl.begin());
                 }
+                pthread_mutex_unlock( &_mutex);
             }
-            pthread_mutex_unlock( &_mutex);
             pthread_mutex_unlock( &_mutex_avisos);
         }
     } catch (const Ice::Exception& ex) {
