@@ -24,11 +24,14 @@ typedef struct client{
 bool cerrar_servidor = 0;
 bool consumo_status = 0;
 bool monitora_status = 0;
+int  var_cond_cierre = 0;
 pthread_t consumo_pth;
 pthread_t monitora_pth;
 pthread_mutex_t _mutex;
 pthread_mutex_t _mutex_machines;
 pthread_mutex_t _mutex_avisos;
+pthread_cond_t _var_cond;
+pthread_cond_t _var_cond_cierre;
 static vector<client_t> datos_cl;
 static vector<machine_client_t> maquinas_avisos_cl;
 static vector<unsigned int> avisos_cl;
@@ -74,19 +77,24 @@ void * consumo_func(void *){
 }
 //Hebra monitora
 void * monitora_func(void *){
-
-    while(datos_cl.size()> 1){
+  int unused;
+  pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS,&unused);
+  while(1){
         pthread_mutex_lock( &_mutex );
+        while(monitora_status==0){
+            pthread_cond_wait(&_var_cond, &_mutex);
+        }
         for(int i = 0;i < datos_cl.size();){
             if(datos_cl.at(i).minutos == 0){
                 datos_cl.erase(datos_cl.begin()+i);
+                if(datos_cl.size()<2){
+                    monitora_status = 0;
+                }
             }else if(datos_cl.at(i).minutos <= datos_cl.at(i).lim && datos_cl.at(i).aviso_flag == 1){
                 datos_cl.at(i).aviso_flag = 0;
-
                 pthread_mutex_lock(&_mutex_avisos);
                 avisos_cl.push_back(datos_cl.at(i).dni);
                 pthread_mutex_unlock( &_mutex_avisos);
-
                 i++;
             }else{
                 i++;
@@ -94,8 +102,6 @@ void * monitora_func(void *){
           }
           pthread_mutex_unlock( &_mutex );
         }
-    monitora_status = 0;
-    pthread_exit(NULL);
 }
 //Hebra avisadora
 void * avisadora_func(void * indata){
@@ -125,8 +131,15 @@ void * avisadora_func(void * indata){
                 pthread_mutex_unlock( &_mutex );
             }
             pthread_mutex_unlock( &_mutex_avisos);
-            if(cerrar_servidor)
+
+            if(cerrar_servidor){
+                    pthread_mutex_lock( &_mutex_machines);
                     remoteService->shutDown();
+                    var_cond_cierre = var_cond_cierre-1;
+                    pthread_mutex_unlock( &_mutex_machines);
+                    pthread_cond_signal(&_var_cond_cierre);
+                    pthread_exit(NULL);
+                  }
         }
     } catch (const Ice::Exception& ex) {
         cerr << ex << endl;
@@ -158,15 +171,13 @@ CallSystem::UserManagerI::darAlta(::Ice::Int dni,
       tmp.aviso_flag = 0;
       tmp.id_machine=-1;
       datos_cl.push_back(tmp);
-      pthread_mutex_unlock( &_mutex );
       if(datos_cl.size()>1&& monitora_status == 0){
-        ret = pthread_create(&monitora_pth, NULL, &monitora_func, NULL);
-        if(ret != 0) {
-        printf("Error: pthread_create() failed\n");
-        exit(EXIT_FAILURE);
-        }
-        monitora_status = 1;
+         monitora_status = 1;
+         pthread_mutex_unlock( &_mutex );
+         pthread_cond_signal(&_var_cond);
+         return 0;
       }
+      pthread_mutex_unlock( &_mutex );
       return 0;
     }
     pthread_mutex_unlock( &_mutex );
@@ -271,12 +282,19 @@ int main(int argc, char* argv[])
   pthread_mutex_init(&_mutex, NULL);
   pthread_mutex_init(&_mutex_machines, NULL);
   pthread_mutex_init(&_mutex_avisos, NULL);
+  pthread_cond_init(&_var_cond, NULL);
+  pthread_cond_init(&_var_cond_cierre, NULL);
   ic = Ice::initialize(argc, argv);
   try {
       Ice::ObjectAdapterPtr adapter =
       ic->createObjectAdapterWithEndpoints("asii_adapter","default -p 10000");
       Ice::ObjectPtr object = new UserManagerI;
       adapter->add(object, ic->stringToIdentity("UserManager"));
+      int ret = pthread_create(&monitora_pth, NULL, &monitora_func, NULL);
+      if(ret != 0) {
+                    printf("Error: pthread_create() failed\n");
+                    exit(EXIT_FAILURE);
+      }
       adapter->activate();
       int option = 0;
       int dni = 0;
@@ -315,18 +333,18 @@ int main(int argc, char* argv[])
           }
       }while(option != SHUTDOWN);
       //Cerrar clientes
+      pthread_cancel(monitora_pth);
+      pthread_join(monitora_pth, NULL);
+      pthread_mutex_lock( &_mutex_machines );
+      cout << "Avisando a los "<<maquinas_avisos_cl.size()<<" cliente de la terminacion!"<< endl;
+      var_cond_cierre = maquinas_avisos_cl.size();
       cerrar_servidor = 1;
-
-      pthread_mutex_lock( &_mutex_machines);
-      for(int i = 0;i < maquinas_avisos_cl.size();i++){
-            pthread_cancel(maquinas_avisos_cl.at(i).pth);
-      }
-      pthread_mutex_unlock( &_mutex_machines);
-      if(monitora_status == 1){
-        pthread_cancel(monitora_pth);
-      }
+      while(var_cond_cierre!=0){
+          pthread_cond_wait(&_var_cond_cierre, &_mutex_machines);
+        }
       if(consumo_status == 1){
         pthread_cancel(consumo_pth);
+        pthread_join(consumo_pth, NULL);
       }
       //Cerrar arrays
       maquinas_avisos_cl.clear();
@@ -336,6 +354,8 @@ int main(int argc, char* argv[])
       pthread_mutex_destroy(&_mutex);
       pthread_mutex_destroy(&_mutex_machines);
       pthread_mutex_destroy(&_mutex_avisos);
+      pthread_cond_destroy(&_var_cond);
+      pthread_cond_destroy(&_var_cond_cierre);
   } catch (const Ice::Exception& e) {
       cerr << e << endl;
       status = 1;

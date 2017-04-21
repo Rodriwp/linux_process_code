@@ -11,7 +11,7 @@ private:
 
     //Server parameters
     static const string LOCALHOST;
-    static const string IP_ADDR_SERVER;
+    static string IP_ADDR_SERVER;
     static const string PORT_SERVER;
     //Server on client parameters
     static const string PORT_CLIENT;
@@ -26,7 +26,7 @@ Ice::CommunicatorPtr ic;
 const int SHUTDOWN = 4;
 const string LOCALHOST = "localhost";
 //Server parameters
-const string IP_ADDR_SERVER = LOCALHOST;
+string IP_ADDR_SERVER = LOCALHOST;
 const string PORT_SERVER = "10000";
 //Server on client parameters
 const string PORT_CLIENT = "10001";
@@ -148,6 +148,10 @@ CallSystem::AlertSystemI::shutDown(const Ice::Current& current)
 //MAIN
 int main(int argc, char* argv[])
 {
+  cout << "Introduzca su ip:"<<endl;
+  cin >> myip;
+  cout << "Introduzca la ip del servidor: "<<endl;
+  cin >> IP_ADDR_SERVER;
   int ret;
   ic = Ice::initialize(argc, argv);
   ret = pthread_create(&server_pth, NULL, &server_func, NULL);

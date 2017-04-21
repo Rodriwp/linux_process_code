@@ -82,6 +82,9 @@ namespace CallSystem
 class Callback_AlertSystem_consumAlert_Base : virtual public ::IceInternal::CallbackBase { };
 typedef ::IceUtil::Handle< Callback_AlertSystem_consumAlert_Base> Callback_AlertSystem_consumAlertPtr;
 
+class Callback_AlertSystem_shutDown_Base : virtual public ::IceInternal::CallbackBase { };
+typedef ::IceUtil::Handle< Callback_AlertSystem_shutDown_Base> Callback_AlertSystem_shutDownPtr;
+
 }
 
 namespace IceProxy
@@ -161,6 +164,76 @@ private:
 
     void consumAlert(::Ice::Int, ::Ice::Int, const ::Ice::Context*);
     ::Ice::AsyncResultPtr begin_consumAlert(::Ice::Int, ::Ice::Int, const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
+    
+public:
+
+    void shutDown()
+    {
+        shutDown(0);
+    }
+    void shutDown(const ::Ice::Context& __ctx)
+    {
+        shutDown(&__ctx);
+    }
+#ifdef ICE_CPP11
+    ::Ice::AsyncResultPtr
+    begin_shutDown(const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_shutDown(0, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent));
+    }
+    ::Ice::AsyncResultPtr
+    begin_shutDown(const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_shutDown(0, ::Ice::newCallback(__completed, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_shutDown(const ::Ice::Context& __ctx, const ::IceInternal::Function<void ()>& __response, const ::IceInternal::Function<void (const ::Ice::Exception&)>& __exception = ::IceInternal::Function<void (const ::Ice::Exception&)>(), const ::IceInternal::Function<void (bool)>& __sent = ::IceInternal::Function<void (bool)>())
+    {
+        return begin_shutDown(&__ctx, new ::IceInternal::Cpp11FnOnewayCallbackNC(__response, __exception, __sent), 0);
+    }
+    ::Ice::AsyncResultPtr
+    begin_shutDown(const ::Ice::Context& __ctx, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __completed, const ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>& __sent = ::IceInternal::Function<void (const ::Ice::AsyncResultPtr&)>())
+    {
+        return begin_shutDown(&__ctx, ::Ice::newCallback(__completed, __sent));
+    }
+#endif
+
+    ::Ice::AsyncResultPtr begin_shutDown()
+    {
+        return begin_shutDown(0, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_shutDown(const ::Ice::Context& __ctx)
+    {
+        return begin_shutDown(&__ctx, ::IceInternal::__dummyCallback, 0);
+    }
+
+    ::Ice::AsyncResultPtr begin_shutDown(const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_shutDown(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_shutDown(const ::Ice::Context& __ctx, const ::Ice::CallbackPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_shutDown(&__ctx, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_shutDown(const ::CallSystem::Callback_AlertSystem_shutDownPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_shutDown(0, __del, __cookie);
+    }
+
+    ::Ice::AsyncResultPtr begin_shutDown(const ::Ice::Context& __ctx, const ::CallSystem::Callback_AlertSystem_shutDownPtr& __del, const ::Ice::LocalObjectPtr& __cookie = 0)
+    {
+        return begin_shutDown(&__ctx, __del, __cookie);
+    }
+
+    void end_shutDown(const ::Ice::AsyncResultPtr&);
+    
+private:
+
+    void shutDown(const ::Ice::Context*);
+    ::Ice::AsyncResultPtr begin_shutDown(const ::Ice::Context*, const ::IceInternal::CallbackBasePtr&, const ::Ice::LocalObjectPtr& __cookie = 0);
     
 public:
     
@@ -288,6 +361,8 @@ class AlertSystem : virtual public ::IceDelegate::Ice::Object
 public:
 
     virtual void consumAlert(::Ice::Int, ::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
+
+    virtual void shutDown(const ::Ice::Context*, ::IceInternal::InvocationObserver&) = 0;
 };
 
 }
@@ -306,6 +381,8 @@ class AlertSystem : virtual public ::IceDelegate::CallSystem::AlertSystem,
 public:
 
     virtual void consumAlert(::Ice::Int, ::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
+    virtual void shutDown(const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 };
 
 }
@@ -324,6 +401,8 @@ class AlertSystem : virtual public ::IceDelegate::CallSystem::AlertSystem,
 public:
 
     virtual void consumAlert(::Ice::Int, ::Ice::Int, const ::Ice::Context*, ::IceInternal::InvocationObserver&);
+
+    virtual void shutDown(const ::Ice::Context*, ::IceInternal::InvocationObserver&);
 };
 
 }
@@ -347,6 +426,9 @@ public:
 
     virtual void consumAlert(::Ice::Int, ::Ice::Int, const ::Ice::Current& = ::Ice::Current()) = 0;
     ::Ice::DispatchStatus ___consumAlert(::IceInternal::Incoming&, const ::Ice::Current&);
+
+    virtual void shutDown(const ::Ice::Current& = ::Ice::Current()) = 0;
+    ::Ice::DispatchStatus ___shutDown(::IceInternal::Incoming&, const ::Ice::Current&);
 
     virtual ::Ice::DispatchStatus __dispatch(::IceInternal::Incoming&, const ::Ice::Current&);
 
@@ -454,6 +536,88 @@ template<class T, typename CT> Callback_AlertSystem_consumAlertPtr
 newCallback_AlertSystem_consumAlert(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
 {
     return new Callback_AlertSystem_consumAlert<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T>
+class CallbackNC_AlertSystem_shutDown : public Callback_AlertSystem_shutDown_Base, public ::IceInternal::OnewayCallbackNC<T>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception&);
+    typedef void (T::*Sent)(bool);
+    typedef void (T::*Response)();
+
+    CallbackNC_AlertSystem_shutDown(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallbackNC<T>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T> Callback_AlertSystem_shutDownPtr
+newCallback_AlertSystem_shutDown(const IceUtil::Handle<T>& instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_AlertSystem_shutDown<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_AlertSystem_shutDownPtr
+newCallback_AlertSystem_shutDown(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_AlertSystem_shutDown<T>(instance, 0, excb, sentcb);
+}
+
+template<class T> Callback_AlertSystem_shutDownPtr
+newCallback_AlertSystem_shutDown(T* instance, void (T::*cb)(), void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_AlertSystem_shutDown<T>(instance, cb, excb, sentcb);
+}
+
+template<class T> Callback_AlertSystem_shutDownPtr
+newCallback_AlertSystem_shutDown(T* instance, void (T::*excb)(const ::Ice::Exception&), void (T::*sentcb)(bool) = 0)
+{
+    return new CallbackNC_AlertSystem_shutDown<T>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT>
+class Callback_AlertSystem_shutDown : public Callback_AlertSystem_shutDown_Base, public ::IceInternal::OnewayCallback<T, CT>
+{
+public:
+
+    typedef IceUtil::Handle<T> TPtr;
+
+    typedef void (T::*Exception)(const ::Ice::Exception& , const CT&);
+    typedef void (T::*Sent)(bool , const CT&);
+    typedef void (T::*Response)(const CT&);
+
+    Callback_AlertSystem_shutDown(const TPtr& obj, Response cb, Exception excb, Sent sentcb)
+        : ::IceInternal::OnewayCallback<T, CT>(obj, cb, excb, sentcb)
+    {
+    }
+};
+
+template<class T, typename CT> Callback_AlertSystem_shutDownPtr
+newCallback_AlertSystem_shutDown(const IceUtil::Handle<T>& instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_AlertSystem_shutDown<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_AlertSystem_shutDownPtr
+newCallback_AlertSystem_shutDown(const IceUtil::Handle<T>& instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_AlertSystem_shutDown<T, CT>(instance, 0, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_AlertSystem_shutDownPtr
+newCallback_AlertSystem_shutDown(T* instance, void (T::*cb)(const CT&), void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_AlertSystem_shutDown<T, CT>(instance, cb, excb, sentcb);
+}
+
+template<class T, typename CT> Callback_AlertSystem_shutDownPtr
+newCallback_AlertSystem_shutDown(T* instance, void (T::*excb)(const ::Ice::Exception&, const CT&), void (T::*sentcb)(bool, const CT&) = 0)
+{
+    return new Callback_AlertSystem_shutDown<T, CT>(instance, 0, excb, sentcb);
 }
 
 }

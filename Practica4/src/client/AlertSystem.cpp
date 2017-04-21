@@ -42,6 +42,8 @@ namespace
 
 const ::std::string __CallSystem__AlertSystem__consumAlert_name = "consumAlert";
 
+const ::std::string __CallSystem__AlertSystem__shutDown_name = "shutDown";
+
 }
 ::IceProxy::Ice::Object* ::IceProxy::CallSystem::upCast(::IceProxy::CallSystem::AlertSystem* p) { return p; }
 
@@ -113,6 +115,55 @@ IceProxy::CallSystem::AlertSystem::end_consumAlert(const ::Ice::AsyncResultPtr& 
     __end(__result, __CallSystem__AlertSystem__consumAlert_name);
 }
 
+void
+IceProxy::CallSystem::AlertSystem::shutDown(const ::Ice::Context* __ctx)
+{
+    ::IceInternal::InvocationObserver __observer(this, __CallSystem__AlertSystem__shutDown_name, __ctx);
+    int __cnt = 0;
+    while(true)
+    {
+        ::IceInternal::Handle< ::IceDelegate::Ice::Object> __delBase;
+        try
+        {
+            __delBase = __getDelegate(false);
+            ::IceDelegate::CallSystem::AlertSystem* __del = dynamic_cast< ::IceDelegate::CallSystem::AlertSystem*>(__delBase.get());
+            __del->shutDown(__ctx, __observer);
+            return;
+        }
+        catch(const ::IceInternal::LocalExceptionWrapper& __ex)
+        {
+            __handleExceptionWrapper(__delBase, __ex, __observer);
+        }
+        catch(const ::Ice::LocalException& __ex)
+        {
+            __handleException(__delBase, __ex, true, __cnt, __observer);
+        }
+    }
+}
+
+::Ice::AsyncResultPtr
+IceProxy::CallSystem::AlertSystem::begin_shutDown(const ::Ice::Context* __ctx, const ::IceInternal::CallbackBasePtr& __del, const ::Ice::LocalObjectPtr& __cookie)
+{
+    ::IceInternal::OutgoingAsyncPtr __result = new ::IceInternal::OutgoingAsync(this, __CallSystem__AlertSystem__shutDown_name, __del, __cookie);
+    try
+    {
+        __result->__prepare(__CallSystem__AlertSystem__shutDown_name, ::Ice::Normal, __ctx);
+        __result->__writeEmptyParams();
+        __result->__send(true);
+    }
+    catch(const ::Ice::LocalException& __ex)
+    {
+        __result->__exceptionAsync(__ex);
+    }
+    return __result;
+}
+
+void
+IceProxy::CallSystem::AlertSystem::end_shutDown(const ::Ice::AsyncResultPtr& __result)
+{
+    __end(__result, __CallSystem__AlertSystem__shutDown_name);
+}
+
 const ::std::string&
 IceProxy::CallSystem::AlertSystem::ice_staticId()
 {
@@ -152,6 +203,37 @@ IceDelegateM::CallSystem::AlertSystem::consumAlert(::Ice::Int dni, ::Ice::Int mi
     {
         __og.abort(__ex);
     }
+    bool __ok = __og.invoke();
+    if(__og.hasResponse())
+    {
+        try
+        {
+            if(!__ok)
+            {
+                try
+                {
+                    __og.throwUserException();
+                }
+                catch(const ::Ice::UserException& __ex)
+                {
+                    ::Ice::UnknownUserException __uue(__FILE__, __LINE__, __ex.ice_name());
+                    throw __uue;
+                }
+            }
+            __og.readEmptyParams();
+        }
+        catch(const ::Ice::LocalException& __ex)
+        {
+            throw ::IceInternal::LocalExceptionWrapper(__ex, false);
+        }
+    }
+}
+
+void
+IceDelegateM::CallSystem::AlertSystem::shutDown(const ::Ice::Context* __context, ::IceInternal::InvocationObserver& __observer)
+{
+    ::IceInternal::Outgoing __og(__handler.get(), __CallSystem__AlertSystem__shutDown_name, ::Ice::Normal, __context, __observer);
+    __og.writeEmptyParams();
     bool __ok = __og.invoke();
     if(__og.hasResponse())
     {
@@ -244,6 +326,68 @@ IceDelegateD::CallSystem::AlertSystem::consumAlert(::Ice::Int dni, ::Ice::Int mi
     }
 }
 
+void
+IceDelegateD::CallSystem::AlertSystem::shutDown(const ::Ice::Context* __context, ::IceInternal::InvocationObserver&)
+{
+    class _DirectI : public ::IceInternal::Direct
+    {
+    public:
+
+        _DirectI(const ::Ice::Current& __current) : 
+            ::IceInternal::Direct(__current)
+        {
+        }
+        
+        virtual ::Ice::DispatchStatus
+        run(::Ice::Object* object)
+        {
+            ::CallSystem::AlertSystem* servant = dynamic_cast< ::CallSystem::AlertSystem*>(object);
+            if(!servant)
+            {
+                throw ::Ice::OperationNotExistException(__FILE__, __LINE__, _current.id, _current.facet, _current.operation);
+            }
+            servant->shutDown(_current);
+            return ::Ice::DispatchOK;
+        }
+        
+    private:
+        
+    };
+    
+    ::Ice::Current __current;
+    __initCurrent(__current, __CallSystem__AlertSystem__shutDown_name, ::Ice::Normal, __context);
+    try
+    {
+        _DirectI __direct(__current);
+        try
+        {
+            __direct.getServant()->__collocDispatch(__direct);
+        }
+        catch(...)
+        {
+            __direct.destroy();
+            throw;
+        }
+        __direct.destroy();
+    }
+    catch(const ::Ice::SystemException&)
+    {
+        throw;
+    }
+    catch(const ::IceInternal::LocalExceptionWrapper&)
+    {
+        throw;
+    }
+    catch(const ::std::exception& __ex)
+    {
+        ::IceInternal::LocalExceptionWrapper::throwWrapper(__ex);
+    }
+    catch(...)
+    {
+        throw ::IceInternal::LocalExceptionWrapper(::Ice::UnknownException(__FILE__, __LINE__, "unknown c++ exception"), false);
+    }
+}
+
 ::Ice::Object* CallSystem::upCast(::CallSystem::AlertSystem* p) { return p; }
 
 namespace
@@ -295,6 +439,16 @@ CallSystem::AlertSystem::___consumAlert(::IceInternal::Incoming& __inS, const ::
     return ::Ice::DispatchOK;
 }
 
+::Ice::DispatchStatus
+CallSystem::AlertSystem::___shutDown(::IceInternal::Incoming& __inS, const ::Ice::Current& __current)
+{
+    __checkMode(::Ice::Normal, __current.mode);
+    __inS.readEmptyParams();
+    shutDown(__current);
+    __inS.__writeEmptyParams();
+    return ::Ice::DispatchOK;
+}
+
 namespace
 {
 const ::std::string __CallSystem__AlertSystem_all[] =
@@ -303,7 +457,8 @@ const ::std::string __CallSystem__AlertSystem_all[] =
     "ice_id",
     "ice_ids",
     "ice_isA",
-    "ice_ping"
+    "ice_ping",
+    "shutDown"
 };
 
 }
@@ -311,7 +466,7 @@ const ::std::string __CallSystem__AlertSystem_all[] =
 ::Ice::DispatchStatus
 CallSystem::AlertSystem::__dispatch(::IceInternal::Incoming& in, const ::Ice::Current& current)
 {
-    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__CallSystem__AlertSystem_all, __CallSystem__AlertSystem_all + 5, current.operation);
+    ::std::pair< const ::std::string*, const ::std::string*> r = ::std::equal_range(__CallSystem__AlertSystem_all, __CallSystem__AlertSystem_all + 6, current.operation);
     if(r.first == r.second)
     {
         throw ::Ice::OperationNotExistException(__FILE__, __LINE__, current.id, current.facet, current.operation);
@@ -338,6 +493,10 @@ CallSystem::AlertSystem::__dispatch(::IceInternal::Incoming& in, const ::Ice::Cu
         case 4:
         {
             return ___ice_ping(in, current);
+        }
+        case 5:
+        {
+            return ___shutDown(in, current);
         }
     }
 
