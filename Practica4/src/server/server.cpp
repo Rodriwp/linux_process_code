@@ -105,6 +105,8 @@ void * monitora_func(void *){
 }
 //Hebra avisadora
 void * avisadora_func(void * indata){
+    int unused;
+    pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS,&unused);
     machine_client_t datos_hebra = *((machine_client_t*)indata);
     try {
         AlertSystemPrx remoteService;
@@ -117,16 +119,17 @@ void * avisadora_func(void * indata){
             pthread_mutex_lock( &_mutex_avisos);
             if(avisos_cl.size() != 0){
                 pthread_mutex_lock( &_mutex );
-                int pos = searchClient(avisos_cl.at(0));
+                int pos = searchClient(avisos_cl.back());
                 if(pos == -1){
                     //Client not longer exits
-                    avisos_cl.erase(avisos_cl.begin());
+                    avisos_cl.pop_back();
                     pthread_mutex_unlock( &_mutex);
                     break;
                 }
                 if(datos_hebra.id_machine==datos_cl.at(pos).id_machine){
+                    avisos_cl.pop_back();
                     remoteService->consumAlert(datos_cl.at(pos).dni,datos_cl.at(pos).lim);
-                    avisos_cl.erase(avisos_cl.begin());
+
                 }
                 pthread_mutex_unlock( &_mutex );
             }
@@ -141,6 +144,21 @@ void * avisadora_func(void * indata){
                     pthread_exit(NULL);
                   }
         }
+    } catch (const Ice::ConnectionRefusedException& ex) {
+      pthread_mutex_unlock( &_mutex );
+      pthread_mutex_unlock( &_mutex_avisos);
+      pthread_mutex_lock(&_mutex_machines);
+      for(int i = 0;i < maquinas_avisos_cl.size();i++){
+          if(maquinas_avisos_cl.at(i).id_machine == datos_hebra.id_machine){
+            maquinas_avisos_cl.erase(maquinas_avisos_cl.begin()+i);
+            var_cond_cierre = var_cond_cierre-1;
+            if(cerrar_servidor)
+            pthread_mutex_unlock( &_mutex_machines );
+            if(cerrar_servidor)
+                pthread_cond_signal(&_var_cond_cierre);
+            pthread_exit(NULL);
+          }
+      }
     } catch (const Ice::Exception& ex) {
         cerr << ex << endl;
         status = 1;
@@ -232,7 +250,6 @@ CallSystem::UserManagerI::connect(const ::std::string& myip,
     if(myip.compare("localhost")){
         inet_pton(AF_INET,myip.c_str(),&id);
     }
-    cout << "New Client Incoming with Ip: "<<id<<endl;
     pthread_mutex_lock( &_mutex_machines );
     for(int i = 0;i < maquinas_avisos_cl.size();i++){
         if(maquinas_avisos_cl.at(i).id_machine == id){
@@ -240,6 +257,7 @@ CallSystem::UserManagerI::connect(const ::std::string& myip,
           return 1;
         }
     }
+    cout << "New Client Incoming with Ip: "<<id<<endl;
     machine_client_t tmp;
     tmp.id_machine = id;
     tmp.ip = myip;
@@ -336,10 +354,15 @@ int main(int argc, char* argv[])
       pthread_cancel(monitora_pth);
       pthread_join(monitora_pth, NULL);
       pthread_mutex_lock( &_mutex_machines );
-      cout << "Avisando a los "<<maquinas_avisos_cl.size()<<" cliente de la terminacion!"<< endl;
+      if(maquinas_avisos_cl.size()!=0){
+        cout << "Avisando a los "<<maquinas_avisos_cl.size()<<" clientes de la terminacion!"<< endl;
+      }
+      else{
+        cout << "No hay clientes conectados. Forever alone :( "<< endl;
+      }
       var_cond_cierre = maquinas_avisos_cl.size();
       cerrar_servidor = 1;
-      while(var_cond_cierre!=0){
+      while(var_cond_cierre != 0){
           pthread_cond_wait(&_var_cond_cierre, &_mutex_machines);
         }
       if(consumo_status == 1){

@@ -134,8 +134,13 @@ CallSystem::AlertSystemI::consumAlert(::Ice::Int dni,
   if(dni == 0){
     cout << "Estas correctamente subscrito al sistema de avisos"<<endl;
   }else{
-    cout << "Aviso al cliente " << dni << ": tiempo de consumo es menor a "
+    cout << "\nAviso al cliente " << dni << ": tiempo de consumo es menor a "
          <<minutesAlertThreshold<<endl;
+    cout << "\nSeleciona una opción: "<< endl;
+    cout << "\t[1] Dar de alta" << endl;
+    cout << "\t[2] Comprar minutos" << endl;
+    cout << "\t[3] Avisar de consumo" << endl;
+    cout << "\t[4] Apagar" << endl;
   }
 }
 void
@@ -148,9 +153,9 @@ CallSystem::AlertSystemI::shutDown(const Ice::Current& current)
 //MAIN
 int main(int argc, char* argv[])
 {
-  cout << "Introduzca su ip:"<<endl;
+  cout << "Introduzca su ip o localhost:"<<endl;
   cin >> myip;
-  cout << "Introduzca la ip del servidor: "<<endl;
+  cout << "Introduzca la ip del servidor o localhost: "<<endl;
   cin >> IP_ADDR_SERVER;
   int ret;
   ic = Ice::initialize(argc, argv);
