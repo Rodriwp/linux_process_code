@@ -43,9 +43,9 @@ const int SHUTDOWN = 4;
 const string LOCALHOST = "localhost";
 //Server parameters
 string IP_ADDR_SERVER = LOCALHOST;
-const string PORT_SERVER = "10000";
+const string PORT_SERVER = "55555";
 //Server on client parameters
-const string PORT_CLIENT = "10001";
+const string PORT_CLIENT = "66666";
 string myip = LOCALHOST;
 pthread_t client_pth;
 pthread_t server_pth;

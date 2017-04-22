@@ -337,7 +337,7 @@ int main(int argc, char* argv[])
   ic = Ice::initialize(argc, argv);
   try {
       Ice::ObjectAdapterPtr adapter =
-      ic->createObjectAdapterWithEndpoints("asii_adapter","default -p 10000");
+      ic->createObjectAdapterWithEndpoints("asii_adapter","default -p 55555");
       Ice::ObjectPtr object = new UserManagerI;
       adapter->add(object, ic->stringToIdentity("UserManager"));
       int ret = pthread_create(&monitora_pth, NULL, &monitora_func, NULL);
